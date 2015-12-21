@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="977ef431-1b17-4487-bc80-c8635898df9c" name="Default" comment="ADD: Initial Commit">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
     </list>
     <ignored path="rd-parallax.iws" />
@@ -28,10 +29,10 @@
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor vertical-scroll-proportion="0.035545025">
-                <caret line="2" column="72" selection-start-line="2" selection-start-column="72" selection-end-line="2" selection-end-column="72" />
+                <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
                 <folding>
-                  <marker date="1450711499887" expanded="true" signature="917:968" placeholder="..." />
-                  <marker date="1450711499887" expanded="true" signature="1362:1409" placeholder="{...}" />
+                  <marker date="1450713675699" expanded="true" signature="927:978" placeholder="..." />
+                  <marker date="1450713675699" expanded="true" signature="1372:1419" placeholder="{...}" />
                 </folding>
               </first_editor>
               <second_editor />
@@ -43,6 +44,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -117,6 +123,8 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="TaskManager">
@@ -175,10 +183,10 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor vertical-scroll-proportion="0.035545025">
-            <caret line="2" column="72" selection-start-line="2" selection-start-column="72" selection-end-line="2" selection-end-column="72" />
+            <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
             <folding>
-              <marker date="1450711499887" expanded="true" signature="917:968" placeholder="..." />
-              <marker date="1450711499887" expanded="true" signature="1362:1409" placeholder="{...}" />
+              <marker date="1450713675699" expanded="true" signature="927:978" placeholder="..." />
+              <marker date="1450713675699" expanded="true" signature="1372:1419" placeholder="{...}" />
             </folding>
           </first_editor>
           <second_editor />
