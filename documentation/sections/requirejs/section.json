@@ -1,0 +1,11 @@
+{
+	"id":"requirejs",
+	"translations":
+	{
+		"en":"Use with Require.js",
+		"ru":"Интеграция с Require.js"
+	},
+  "articles": {
+
+  }
+}

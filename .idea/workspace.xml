@@ -2,8 +2,116 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="977ef431-1b17-4487-bc80-c8635898df9c" name="Default" comment="ADD: Initial Commit">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/fonts/fontawesome-webfont.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/fonts/fontawesome-webfont.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/fonts/fontawesome-webfont.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/fonts/fontawesome-webfont.woff2" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/images/favicon.ico" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/images/favicon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/images/ie8-panel/warning_bar_0000_us.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/images/page-1_img01.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/images/page-1_img02.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/images/page-1_img03.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/images/page-1_img04.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/images/page-1_img05.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/video/video-bg.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/video/video-bg.mp4" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/fonts/material-design.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/fonts/material-design.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/fonts/material-design.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/chrome.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/fancybox_buttons.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/fancybox_loading.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/fancybox_overlay.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/fancybox_sprite.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/favicon.ico" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/favicon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/firefox.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/ie.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/ie8-panel/warning_bar_0000_us.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/img/safari.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/video/framework_install.mp4" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/video/framework_install.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/video/static_editor.mp4" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/video/static_editor.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/vendor/compiler.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/css/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/fonts/fontawesome-webfont.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/index.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/core.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/html5shiv.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/jquery.swiper.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/jquery.ui.totop.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/jquery.vide.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/pointer-events.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/script.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/script.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/smoothscroll.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/wow.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/_variables.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/components/_buttons.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/components/_icons.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/extensions/_rd-parallax.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/extensions/_swiper.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/extensions/_ui-to-top.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/extensions/_vide.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/fonts/_font-awesome.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/helpers/_animate.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/helpers/_floating.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/helpers/_text-alignment.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/helpers/_text-styling.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/includes/_mixins.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/includes/_normalize.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/modules/tm-box/_boxes.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/modules/tm-grid/_tm-grid-builder.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/modules/tm-grid/_tm-grid.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/sass/style.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/css/rd-parallax.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/js/jquery.rd-parallax.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/js/jquery.rd-parallax.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/config.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/css/grid.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/css/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/fonts/material-design.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/functions.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/index.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/device.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/html5shiv.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery-migrate-1.2.1.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery.easing.1.3.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery.rd-navbar.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery.ui.totop.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/script.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_alerts.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_mixins.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_navbar.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_normalize.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_owl-carousel.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_select.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_stuck.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_to-top.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/_variables.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/grid.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sass/style.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/section.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/demo/ru/__description.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/demo/section.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/howtouse/ru/__description.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/howtouse/section.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/introduction/ru/__description.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/introduction/section.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/requirejs/ru/__description.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/requirejs/section.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/settings/ru/__description.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/sections/settings/section.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sources/coffee/jquery.rd-parallax.coffee" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sources/sass/rd-parallax.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/vendor/watchers.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
     </list>
     <ignored path="rd-parallax.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,19 +131,29 @@
     <favorites_list name="rd-parallax" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="readme.md" pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="readme.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/readme.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor vertical-scroll-proportion="0.035545025">
-                <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+              <first_editor vertical-scroll-proportion="0.37278107">
+                <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
                 <folding>
-                  <marker date="1450713675699" expanded="true" signature="927:978" placeholder="..." />
-                  <marker date="1450713675699" expanded="true" signature="1372:1419" placeholder="{...}" />
+                  <marker date="1450713725136" expanded="true" signature="927:978" placeholder="..." />
+                  <marker date="1450713725136" expanded="true" signature="1372:1419" placeholder="{...}" />
                 </folding>
               </first_editor>
               <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__description.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/documentation/sections/introduction/ru/__description.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.30106258">
+              <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -46,7 +164,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="master-2" />
       </map>
     </option>
   </component>
@@ -93,8 +211,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -113,17 +229,99 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rd-parallax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rd-parallax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="documentation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rd-parallax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rd-parallax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="documentation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sections" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rd-parallax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rd-parallax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="documentation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sections" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="introduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rd-parallax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rd-parallax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="documentation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sections" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="introduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ru" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.lastSelected" value="editing.templates" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/vendor/watchers.xml" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -149,20 +347,20 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10273973" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -182,14 +380,50 @@
     <entry file="file://$PROJECT_DIR$/readme.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor vertical-scroll-proportion="0.035545025">
-            <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+          <first_editor vertical-scroll-proportion="0.0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
             <folding>
-              <marker date="1450713675699" expanded="true" signature="927:978" placeholder="..." />
-              <marker date="1450713675699" expanded="true" signature="1372:1419" placeholder="{...}" />
+              <marker date="1450713725136" expanded="true" signature="927:978" placeholder="..." />
+              <marker date="1450713725136" expanded="true" signature="1372:1419" placeholder="{...}" />
             </folding>
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor vertical-scroll-proportion="0.0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding>
+              <marker date="1450713725136" expanded="true" signature="927:978" placeholder="..." />
+              <marker date="1450713725136" expanded="true" signature="1372:1419" placeholder="{...}" />
+            </folding>
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor vertical-scroll-proportion="0.37278107">
+            <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+            <folding>
+              <marker date="1450713725136" expanded="true" signature="927:978" placeholder="..." />
+              <marker date="1450713725136" expanded="true" signature="1372:1419" placeholder="{...}" />
+            </folding>
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/documentation/sections/introduction/ru/__description.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30106258">
+          <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>

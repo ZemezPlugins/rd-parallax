@@ -1,0 +1,11 @@
+{
+	"id":"settings",
+	"translations":
+	{
+		"en":"Options",
+		"ru":"Настройки скрипта"
+	},
+  "articles": {
+
+  }
+}
