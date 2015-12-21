@@ -1,6 +1,6 @@
 # RD Parallax
 
-Flexible multilayer parallax effect.
+Flexible multilayer parallax effect. Easy integration with other plugins
 
 Check out this [Demo](http://cms.devoffice.com/coding-dev/rd-parallax/demo/) to see it in action!
 

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="977ef431-1b17-4487-bc80-c8635898df9c" name="Default" comment="" />
+    <list default="true" id="977ef431-1b17-4487-bc80-c8635898df9c" name="Default" comment="ADD: Initial Commit">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
+    </list>
     <ignored path="rd-parallax.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,11 +27,11 @@
         <entry file="file://$PROJECT_DIR$/readme.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor vertical-scroll-proportion="0.5687204">
-                <caret line="32" column="3" selection-start-line="32" selection-start-column="3" selection-end-line="32" selection-end-column="3" />
+              <first_editor vertical-scroll-proportion="0.035545025">
+                <caret line="2" column="72" selection-start-line="2" selection-start-column="72" selection-end-line="2" selection-end-column="72" />
                 <folding>
-                  <marker date="1450711264762" expanded="true" signature="881:932" placeholder="..." />
-                  <marker date="1450711264762" expanded="true" signature="1326:1373" placeholder="{...}" />
+                  <marker date="1450711499887" expanded="true" signature="917:968" placeholder="..." />
+                  <marker date="1450711499887" expanded="true" signature="1362:1409" placeholder="{...}" />
                 </folding>
               </first_editor>
               <second_editor />
@@ -172,11 +174,11 @@
     <entry file="file://$PROJECT_DIR$/readme.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor vertical-scroll-proportion="0.5687204">
-            <caret line="32" column="3" selection-start-line="32" selection-start-column="3" selection-end-line="32" selection-end-column="3" />
+          <first_editor vertical-scroll-proportion="0.035545025">
+            <caret line="2" column="72" selection-start-line="2" selection-start-column="72" selection-end-line="2" selection-end-column="72" />
             <folding>
-              <marker date="1450711264762" expanded="true" signature="881:932" placeholder="..." />
-              <marker date="1450711264762" expanded="true" signature="1326:1373" placeholder="{...}" />
+              <marker date="1450711499887" expanded="true" signature="917:968" placeholder="..." />
+              <marker date="1450711499887" expanded="true" signature="1362:1409" placeholder="{...}" />
             </folding>
           </first_editor>
           <second_editor />
