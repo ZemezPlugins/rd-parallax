@@ -11,8 +11,15 @@
 
   &-inner{
     overflow: hidden;
-    position: relative;
-    min-height: 100%;
+    -webkit-transform: translate3d(0px, 0px, 0px);
+    transform: translate3d(0px, 0px, 0px);
+  }
+
+  &-outer{
+    overflow: hidden;
+    .rd-parallax-inner{
+      overflow: visible;
+    }
   }
 
   &-layer[data-type="media"]{
@@ -23,6 +30,7 @@
     bottom: 0;
     height: 100%;
     -webkit-backface-visibility: hidden;
+    pointer-events: none;
 
     iframe{
       width: 100%;

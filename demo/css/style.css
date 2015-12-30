@@ -6013,6 +6013,9 @@ html body .page .primary-color {
     width: 100%;
     height: 100%; }
 
+.rd-parallax, .rd-parallax h1, .rd-parallax h2, .rd-parallax h3, .rd-parallax h4, .rd-parallax h5, .rd-parallax h6, .rd-parallax .heading-1, .rd-parallax .heading-2, .rd-parallax .heading-3, .rd-parallax .heading-4, .rd-parallax .heading-5, .rd-parallax .heading-6 {
+  color: #FFF; }
+
 /*
 * @subsection   Buttons
 */
@@ -6154,70 +6157,6 @@ html body .page .primary-color {
 * @description  This section holds some of style declarations for necessary
 *               scripts
 */
-/*
-* @subsection   RD Parallax
-*
-* @description  Describes style declarations for RD Parallax extension
-*
-* @author       Evgeniy Gusarov
-* @link         https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
-* @version      3.0.0
-*/
-.rd-parallax-layer-wrap {
-  position: relative; }
-.rd-parallax-inner {
-  overflow: hidden;
-  position: relative;
-  min-height: 100%; }
-.rd-parallax-outer {
-  overflow: hidden; }
-  .rd-parallax-outer .rd-parallax-inner {
-    overflow: visible; }
-.rd-parallax-layer[data-type="media"] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100%;
-  -webkit-backface-visibility: hidden; }
-  .rd-parallax-layer[data-type="media"] iframe {
-    width: 100%;
-    height: 100%; }
-.rd-parallax-layer[data-url] {
-  -webkit-background-size: cover;
-  background-size: cover;
-  background-position: center center; }
-.rd-parallax-layer[data-type="html"] {
-  position: relative; }
-.rd-parallax, .rd-parallax h1, .rd-parallax h2, .rd-parallax h3, .rd-parallax h4, .rd-parallax h5, .rd-parallax h6, .rd-parallax .heading-1, .rd-parallax .heading-2, .rd-parallax .heading-3, .rd-parallax .heading-4, .rd-parallax .heading-5, .rd-parallax .heading-6 {
-  color: #fff; }
-.rd-parallax .image-wrap-1 {
-  visibility: hidden;
-  position: absolute;
-  top: -30px;
-  width: 710px;
-  right: 100%;
-  margin-right: 38px;
-  z-index: 1; }
-  .rd-parallax .image-wrap-1 img {
-    -webkit-transform: rotate(10deg);
-    transform: rotate(10deg); }
-.rd-parallax .image-wrap-2 {
-  visibility: hidden;
-  position: absolute;
-  top: 100px;
-  width: 910px;
-  right: 100%;
-  margin-right: 58px;
-  z-index: 0; }
-  .rd-parallax .image-wrap-2 img {
-    -webkit-transform: rotate(-13deg);
-    transform: rotate(-13deg); }
-@media (min-width: 992px) {
-  .rd-parallax .image-wrap-1, .rd-parallax .image-wrap-2 {
-    visibility: visible; } }
-
 /**
  * @subsection   Swiper 3.1.7
  * @description  Most modern mobile touch slider and framework with
@@ -6676,7 +6615,8 @@ button.swiper-pagination-bullet {
   .swiper-slide .parallax_cnt:before, .swiper-slide .vide__body:before {
     content: '';
     display: inline-block;
-    height: 50%; }
+    height: 50%;
+    margin-left: -4px; }
   .swiper-slide-caption {
     display: inline-block;
     width: 100%;

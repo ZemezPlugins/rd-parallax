@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.0.0
+ * @version      3.2.1
 ###
 (($, document, window) ->
   ###*
@@ -10,9 +10,8 @@
    * @public
   ###
   isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  isFirefox = typeof InstallTrigger isnt 'undefined'
+  isSafariIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
   isIE = navigator.appVersion.indexOf("MSIE") isnt -1
-  ieVersion = if isIE then parseInt(navigator.appVersion.split("MSIE")[1]) else null
 
   ###*
    * Creates a parallax.
@@ -29,10 +28,8 @@
     ###
     Defaults:
       blur: true
-      direction: 'inverse'
+      direction: 'normal'
       speed: 1
-      duration: 200
-      easing: 'linear'
       screenAliases: {
         0: ''
         480: 'xs'
@@ -42,11 +39,13 @@
       }
 
     constructor: (element, options) ->
-      @options = $.extend(true, {}, @Defaults, options)
-      @$element = $(element)
-      @$win = $(window)
-      @$doc = $(document)
-      @initialize()
+      @.options = $.extend(true, {}, @.Defaults, options)
+      @.$element = $(element)
+      @.$canvas = false
+      @.$win = $(window)
+      @.$doc = $(document)
+      @.$anchor = false
+      @.initialize()
 
     ###*
      * Initializes the Parallax.
@@ -56,50 +55,107 @@
       ctx = @
 
       ctx
-        .$element
-        .wrapInner($('<div/>', {"class": "rd-parallax-inner"}))
-        .find(".rd-parallax-layer[data-type]")
-        .each ->
-          layer = $(@)
+      .$element
+      .parents()
+      .each(()->
+        # Check if parallax canvas is inside of transformed element
+        el = @
+        transforms = {
+          'webkitTransform':'-webkit-transform'
+          'OTransform':'-o-transform'
+          'msTransform':'-ms-transform'
+          'MozTransform':'-moz-transform'
+          'transform':'transform'
+        }
 
-          switch layer.attr("data-type").toLowerCase()
-            when "media"
-              # Build Image media
-              if url = @.getAttribute("data-url")
-                layer.css({
-                  "background-image" : ctx.url(url)
-                })
+        for t of transforms
+          if transforms.hasOwnProperty(t)
+            if el.style[t]?
+              hasMatrix = window.getComputedStyle(el).getPropertyValue(transforms[t])
 
-                # Create Media Blur handler
-                if @.getAttribute("data-blur") == "true" or ctx.options.blur
-                  $('<img/>', {src: url}).load(() ->
-                      layer.attr("data-media-width", this.width)
-                      layer.attr("data-media-height", this.height)
-                      ctx.$win.on("resize", $.proxy(ctx.blurMedia, layer[0], ctx))
-#                      ctx.$win.on("orientationchange", $.proxy(ctx.blurMedia, layer[0], ctx)) if isMobile
-                      $.proxy(ctx.blurMedia, layer[0], ctx)()
-                  )
+        if (hasMatrix? and hasMatrix.length > 0 and hasMatrix isnt "none")
+          ctx.$anchor = $(@)
+          return false
+      )
+      .end()
+      .wrapInner($('<div/>', {"class": "rd-parallax-inner"}))
+      .find(".rd-parallax-layer[data-type]")
+      .each ->
+        layer = $(@)
 
-              # Create resize handlers
-              if !isMobile
-                ctx.$element.on("resize", $.proxy(ctx.resizeMedia, @, ctx))
-                ctx.$element.on("resize", $.proxy(ctx.moveLayer, @, ctx))
-                ctx.$win.on("resize", $.proxy(ctx.resizeMedia, @, ctx))
-#                ctx.$win.on("orientationchange", $.proxy(ctx.resizeMedia, @, ctx)) if isMobile
+        switch layer.attr("data-type").toLowerCase()
+          when "media"
+            # Build Image media
+            if url = @.getAttribute("data-url")
+              layer.css({
+                "background-image": ctx.url(url)
+              })
 
-          if !isMobile
-            # Create Document scroll handler
-            ctx.$doc.on("scroll", $.proxy(ctx.moveLayer, @, ctx))
-            ctx.$doc.on("resize", $.proxy(ctx.moveLayer, @, ctx))
+              # Create Media Blur handler
+              if @.getAttribute("data-blur") == "true" or ctx.options.blur
+                $('<img/>', {src: url}).load(() ->
+                  # Save image original size
+                  layer.attr("data-media-width", this.width)
+                  layer.attr("data-media-height", this.height)
 
-            # Create Layer fade handler
-            ctx.$doc.on("scroll", $.proxy(ctx.fadeLayer, @, ctx)) if @.getAttribute("data-fade") == "true" and !isIE
-            ctx.$doc.on("resize", $.proxy(ctx.fadeLayer, @, ctx)) if @.getAttribute("data-fade") == "true" and !isIE
-          return
+                  # Create media listener on blur image if its to small
+                  ctx.$win.on("resize", $.proxy(ctx.blurMedia, layer[0], ctx)) if !isMobile
+
+                  # Make image initial blur if needed
+                  $.proxy(ctx.blurMedia, layer[0], ctx)()
+                )
+
+            ctx.$element.on("resize", $.proxy(ctx.resizeMedia, @, ctx))
+            ctx.$element.on("resize", $.proxy(ctx.moveLayer, @, ctx))
+
+            # Create media resize handlers
+            if !isMobile
+              ctx.$win.on("resize", $.proxy(ctx.resizeMedia, @, ctx))
+            else
+              ctx.$win.on("orientationchange", $.proxy(ctx.resizeMedia, @, ctx))
+
+        # Apply layer handlers
+        if !isMobile
+          ctx.$doc.on("scroll", $.proxy(ctx.moveLayer, @, ctx))
+          ctx.$win.on("resize", $.proxy(ctx.moveLayer, @, ctx))
+
+          # Create Layer fade handler
+          if @.getAttribute("data-fade") == "true"
+            # Fade layer on scroll
+            ctx.$doc.on("scroll", $.proxy(ctx.fadeLayer, @, ctx))
+
+            # Fade layer on window resize on desktop
+            ctx.$win.on("resize", $.proxy(ctx.fadeLayer, @, ctx))
+
+        # Create move handler for device fallback
+        else
+          ctx.$win.on("orientationchange", $.proxy(ctx.moveLayer, @, ctx))
+
+        return
+
+      ctx.$canvas = ctx.$element.find(".rd-parallax-inner")
+
+      if (ctx.$element.attr("data-fit-to-parent") is "true")
+        ctx.$win.on("resize", $.proxy(ctx.fitCanvas, ctx.$canvas, ctx))
+
+      # Create fixed Canvas to prevent lagging on desktop
+      if !isMobile
+        ctx.$win.on("resize", $.proxy(ctx.resizeWrap, ctx.$element[0], ctx))
+        ctx.$win.on("resize", $.proxy(ctx.resizeCanvas, ctx.$canvas[0], ctx))
+        ctx.$doc.on("scroll", $.proxy(ctx.moveCanvas, ctx.$canvas[0], ctx))
+        ctx.$win.on("resize", $.proxy(ctx.moveCanvas, ctx.$canvas[0], ctx))
 
       # Trigger Initial Events
       ctx.$win.trigger("resize")
+      ctx.$win.trigger("orientationchange")
       ctx.$doc.trigger("scroll")
+
+      ctx.$win.load(()->
+        ctx.$win.trigger("resize")
+        ctx.$win.trigger("orientationchange")
+        ctx.$doc.trigger("scroll")
+      )
+
       return
 
 
@@ -113,16 +169,43 @@
       offt = ctx.$element.offset().top
       wh = ctx.$win.height()
       ch = ctx.$element.height()
+      dh = ctx.$doc.height()
       h = @.offsetHeight
       v = Math.max(parseFloat(v), 0)
       dir = if ctx.getAttribute(@, 'direction') is "inverse" then -1 else 1
       v = dir * Math.min(parseFloat(ctx.getAttribute(@, 'speed')), 2.0)
 
-      pos = -(offt - scrt) * v + (ch - h)/2 + (wh - ch)/2 * v
+      if @.getAttribute("data-type") isnt "media"
+        if offt < wh or offt > dh - wh
+          if offt < wh
+            dy = offt / (wh - ch) || 0
+          else
+            dy = (offt - dh + wh) / (wh - ch) || 0
+        else
+          dy = 0.5
+      else
+        dy = 0.5
 
-      $(@)
-        .css(ctx.transform(pos, ctx))
+      pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch)*dy*v
 
+      # Check layers is in viewport
+      if (scrt + wh >= offt and scrt <= offt + ch)
+        $(@).css(ctx.transform(pos, ctx))
+
+    ###*
+     * Move Canvas
+     * @param {object} ctx
+     * @protected
+    ###
+    moveCanvas: (ctx, e)->
+      canvas = $(@)
+      scrt = ctx.$win.scrollTop()
+      offt = ctx.$element.offset().top
+
+      pos = (if ctx.$anchor then ctx.$element.position().top else offt - scrt)
+
+      canvas
+        .css({"top": pos})
 
     ###*
      * Fade Layer
@@ -132,8 +215,8 @@
     fadeLayer: (ctx, e) ->
       layer = $(@)
       ch = ctx.$element.height()
-      coff = ctx.$element.offset().top + ch/2
-      loff = layer.offset().top + layer.height()/2
+      coff = ctx.$element.offset().top + ch / 2
+      loff = layer.offset().top + layer.height() / 2
       pos = ch / 6.0
 
       if coff + pos > loff and coff - pos < loff
@@ -175,6 +258,34 @@
 
 
     ###*
+     * Resize Main parallax wrap
+     * @param {object} ctx
+     * @protected
+    ###
+    resizeWrap: (ctx) ->
+      @.style.height = ctx.px(ctx.$canvas.outerHeight())
+
+
+    ###*
+     * Resize Canvas
+     * @param {object} ctx
+     * @protected
+    ###
+    resizeCanvas: (ctx) ->
+      $canvas = $(@)
+      $canvas.css({
+        "position": "fixed"
+        "left": (if ctx.$anchor then ctx.$element.offset().left - ctx.$anchor.offset().left else ctx.$element.offset().left)
+        "width": ctx.$element.width()
+      })
+
+    fitCanvas: (ctx)->
+      setTimeout(()->
+        ctx.$canvas.css({"height": ctx.$element.parent().parent().height()})
+      )
+
+
+    ###*
      * Calc media layer height.
      * @param {number} wh
      * @param {number} v
@@ -184,11 +295,9 @@
     getMediaHeight: (wh, ch, v, dir) ->
       v = Math.max(parseFloat(v), 0)
       v = Math.min(parseFloat(v), 2.0)
-      dh = 0
+      dh = if dir is -1 then (ch + wh) * v else 0
 
-      dh = (ch + wh)*v if dir is -1
-
-      ch + dh + if v <= 1 then (wh - ch) * v else wh * v
+      (ch + dh + if v <= 1 then Math.abs(wh - ch) * v else wh * v) + 56
 
 
     ###*
@@ -217,14 +326,10 @@
     * @protected
     ###
     transform: (pos, ctx) ->
-      if isIE and ieVersion < 10
-        {"transform": "translate(0," + pos + "px)"}
-      else
-        {
-          "-webkit-transform": "translate3d(0," + pos + "px, 0)"
-          "transform": "translate3d(0," + pos + "px, 0)"
-          "transition": if isMobile then "" + ctx.options.duration + "ms" + " transform " + ctx.options.easing else "none"
-        }
+      {
+        "-webkit-transform": "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + pos + ",0,1)"
+        "transform": "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + pos + ",0,1)"
+      }
 
     ###*
      * Creates blur property
@@ -234,11 +339,15 @@
     ###
     blur: (blur) ->
       if blur > 3
-        {'-webkit-filter': 'blur(' + blur + 'px)'
-         ,'filter': 'blur(' + blur + 'px)'}
+        {
+          '-webkit-filter': 'blur(' + blur + 'px)'
+          , 'filter': 'blur(' + blur + 'px)'
+        }
       else
-        {'filter': 'none'
-          ,'-webkit-filter': 'none'}
+        {
+          'filter': 'none'
+          , '-webkit-filter': 'none'
+        }
 
     ###*
     * Gets specific option of plugin
@@ -247,20 +356,15 @@
     getAttribute: (element, key)->
       if @.options.screenAliases?
         aliases = Object.keys(@.options.screenAliases).reverse()
-        for i in [0..(aliases.length-1)]
+        for i in [0..(aliases.length - 1)]
           alias = if @.options.screenAliases[aliases[i]] isnt '' then "-#{@.options.screenAliases[aliases[i]]}" else @.options.screenAliases[aliases[i]]
-          attr = element.getAttribute("data#{alias}-#{key}") 
+          attr = element.getAttribute("data#{alias}-#{key}")
           if aliases[i] <= @.$win.width() and attr?
             break;
       if attr?
         attr
       else
         @.options[key]
-
-
-
-
-
 
 
   ###*
@@ -273,8 +377,7 @@
       if !$this.data('RDParallax')
         $this.data 'RDParallax', new RDParallax(this, options)
 
-  window.RDParallax = RDParallax
-) window.jQuery, document, window
+  window.RDParallax = RDParallax) window.jQuery, document, window
 
 
 ###*

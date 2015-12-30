@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" class="wide wow-animation smoothscroll">
+<html lang="en" class="wide wow-animation">
 <head>
     <!-- Site Title -->
     <title>RD Parallax Demo</title>
@@ -10,6 +10,7 @@
     <!-- Stylesheets -->
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../dist/css/rd-parallax.css"/>
     <link href='//fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 
     <!--[if lt IE 10]>
@@ -42,76 +43,45 @@
                  data-min-height="350px">
             <div class="swiper-wrapper">
                 <!-- RD Parallax -->
-                <div class="swiper-slide rd-parallax">
-                    <div class="rd-parallax-layer" data-speed="0.6" data-type="media"
-                         data-url="images/page-1_img01.jpg"></div>
-                    <div class="rd-parallax-layer" data-speed="0.7" data-type="html" data-fade="true">
-                        <div class="swiper-slide-caption">
-                            <div class="container text-center text-md-right">
-                                <h1>
+                <div class="swiper-slide">
+                    <div class="swiper-slide-caption">
+                        <div class="rd-parallax" data-fit-to-parent="true">
+                            <div class="rd-parallax-layer" data-speed="0.6" data-type="media"
+                                 data-url="images/page-1_img01.jpg"></div>
+                            <div class="rd-parallax-layer" data-speed="0.7" data-type="html">
+                                <div class="container text-center text-md-right">
+                                    <h1>
                                     <span class="heading-4" data-caption-animate="fadeInUp">
                                         This is a superior responsive
                                     </span>
-                                    <span class="heading-1" data-caption-animate="fadeInUp" data-caption-delay="400">Wordpress Theme</span>
+                                        <span class="heading-1" data-caption-animate="fadeInUp"
+                                              data-caption-delay="400">Wordpress Theme</span>
                                     <span class="heading-3" data-caption-animate="fadeInUp" data-caption-delay="800">
                                         of the highest quality
                                     </span>
-                                </h1>
+                                    </h1>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- END RD Parallax-->
-                <div class="swiper-slide rd-parallax">
-                    <div class="rd-parallax-layer vide" data-speed="0.6" data-type="media"
-                         data-vide-bg="video/video-bg"></div>
-                    <div class="rd-parallax-layer" data-speed="0.7" data-type="html" data-fade="true">
-                        <div class="swiper-slide-caption">
-                            <div class="container text-center">
-                                <h1>
+                <!--END RD Parallax-->
+                <div class="swiper-slide">
+                    <div class="swiper-slide-caption">
+                        <div class="rd-parallax" data-fit-to-parent="true">
+                            <div class="rd-parallax-layer vide" data-speed="0.6" data-type="media"
+                                 data-vide-bg="video/video-bg"></div>
+                            <div class="rd-parallax-layer" data-speed="0.7" data-type="html" data-fade="true">
+                                <div class="container text-center">
+                                    <h1>
                                     <span class="heading-1" data-caption-animate="fadeInUp"
                                           data-caption-animate="fadeInUp">
-                                        Looking excellent on any device
+                                    Looking excellent on any device
                                     </span>
                                     <span class="heading-4" data-caption-animate="fadeInUp" data-caption-delay="400">
-                                        Inspected on laptops, desktops, phones and tablets.
+                                    Inspected on laptops, desktops, phones and tablets.
                                     </span>
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide rd-parallax">
-                    <div class="rd-parallax-layer" data-speed="0.4" data-type="media"
-                         data-url="images/page-1_img03.jpg"></div>
-                    <div class="swiper-slide-caption">
-                        <div class="container text-center text-md-left">
-                            <div class="row">
-                                <div class="col-md-5 col-md-preffix-7 rd-parallax-layer-wrap">
-                                    <div class="rd-parallax-layer image-wrap-1" data-speed="0.6" data-type="html" data-fade="false">
-                                        <div data-caption-animate="fadeInLeft" data-caption-delay="400">
-                                            <img src="images/page-1_img02.png" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="rd-parallax-layer image-wrap-2" data-speed="0.5" data-type="html"
-                                         data-fade="false">
-                                        <div data-caption-animate="fadeInLeft">
-                                            <img src="images/page-1_img05.png" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="rd-parallax-layer" data-speed="0.7" data-type="html" data-fade="true">
-                                        <h1>
-                                            <span class="heading-1" data-caption-animate="fadeInRight"
-                                                  data-caption-delay="800">Created
-                                                to showcase
-                                            </span>
-                                            <span class="heading-4" data-caption-animate="fadeInRight"
-                                                  data-caption-delay="1200">
-                                                your portfolio, any inventive use,
-                                                and many many more!
-                                            </span>
-                                        </h1>
-                                    </div>
+                                    </h1>
                                 </div>
                             </div>
                         </div>
@@ -140,8 +110,9 @@
 
         <!-- Features -->
         <section class="rd-parallax">
-            <div class="rd-parallax-layer" data-speed="0" data-sm-speed="0.3" data-type="media" data-url="images/page-1_img04.jpg"></div>
-            <div class="rd-parallax-layer well-md text-center" data-speed="0" data-sm-speed="0.4" data-type="html">
+            <div class="rd-parallax-layer" data-speed="0" data-sm-speed="0.3" data-type="media"
+                 data-url="images/page-1_img04.jpg"></div>
+            <div class="rd-parallax-layer well-md text-center" data-speed="0" data-sm-speed="0.1" data-type="html">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-3">
@@ -183,7 +154,7 @@
                 </div>
             </div>
         </section>
-        <!-- END Features-->
+        <!--END Features-->
         <!-- Subfooter -->
         <section class="well-sm text-center">
             <div class="container text-sm-left">

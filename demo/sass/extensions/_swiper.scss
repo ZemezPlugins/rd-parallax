@@ -466,6 +466,7 @@ button.swiper-pagination-bullet {
     content: '';
     display: inline-block;
     height: 50%;
+    margin-left: -4px;
   }
 
   &-caption{

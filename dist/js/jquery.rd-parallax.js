@@ -4,7 +4,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.0.0
+ * @version      3.2.1
  */
 
 (function() {
@@ -14,11 +14,10 @@
      * Initial flags
      * @public
      */
-    var RDParallax, ieVersion, isFirefox, isIE, isMobile;
+    var RDParallax, isIE, isMobile, isSafariIOS;
     isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    isFirefox = typeof InstallTrigger !== 'undefined';
+    isSafariIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
     isIE = navigator.appVersion.indexOf("MSIE") !== -1;
-    ieVersion = isIE ? parseInt(navigator.appVersion.split("MSIE")[1]) : null;
 
     /**
      * Creates a parallax.
@@ -35,10 +34,8 @@
        */
       RDParallax.prototype.Defaults = {
         blur: true,
-        direction: 'inverse',
+        direction: 'normal',
         speed: 1,
-        duration: 200,
-        easing: 'linear',
         screenAliases: {
           0: '',
           480: 'xs',
@@ -51,8 +48,10 @@
       function RDParallax(element, options) {
         this.options = $.extend(true, {}, this.Defaults, options);
         this.$element = $(element);
+        this.$canvas = false;
         this.$win = $(window);
         this.$doc = $(document);
+        this.$anchor = false;
         this.initialize();
       }
 
@@ -65,7 +64,28 @@
       RDParallax.prototype.initialize = function() {
         var ctx;
         ctx = this;
-        ctx.$element.wrapInner($('<div/>', {
+        ctx.$element.parents().each(function() {
+          var el, hasMatrix, t, transforms;
+          el = this;
+          transforms = {
+            'webkitTransform': '-webkit-transform',
+            'OTransform': '-o-transform',
+            'msTransform': '-ms-transform',
+            'MozTransform': '-moz-transform',
+            'transform': 'transform'
+          };
+          for (t in transforms) {
+            if (transforms.hasOwnProperty(t)) {
+              if (el.style[t] != null) {
+                hasMatrix = window.getComputedStyle(el).getPropertyValue(transforms[t]);
+              }
+            }
+          }
+          if ((hasMatrix != null) && hasMatrix.length > 0 && hasMatrix !== "none") {
+            ctx.$anchor = $(this);
+            return false;
+          }
+        }).end().wrapInner($('<div/>', {
           "class": "rd-parallax-inner"
         })).find(".rd-parallax-layer[data-type]").each(function() {
           var layer, url;
@@ -82,30 +102,50 @@
                   }).load(function() {
                     layer.attr("data-media-width", this.width);
                     layer.attr("data-media-height", this.height);
-                    ctx.$win.on("resize", $.proxy(ctx.blurMedia, layer[0], ctx));
+                    if (!isMobile) {
+                      ctx.$win.on("resize", $.proxy(ctx.blurMedia, layer[0], ctx));
+                    }
                     return $.proxy(ctx.blurMedia, layer[0], ctx)();
                   });
                 }
               }
+              ctx.$element.on("resize", $.proxy(ctx.resizeMedia, this, ctx));
+              ctx.$element.on("resize", $.proxy(ctx.moveLayer, this, ctx));
               if (!isMobile) {
-                ctx.$element.on("resize", $.proxy(ctx.resizeMedia, this, ctx));
-                ctx.$element.on("resize", $.proxy(ctx.moveLayer, this, ctx));
                 ctx.$win.on("resize", $.proxy(ctx.resizeMedia, this, ctx));
+              } else {
+                ctx.$win.on("orientationchange", $.proxy(ctx.resizeMedia, this, ctx));
               }
           }
           if (!isMobile) {
             ctx.$doc.on("scroll", $.proxy(ctx.moveLayer, this, ctx));
-            ctx.$doc.on("resize", $.proxy(ctx.moveLayer, this, ctx));
-            if (this.getAttribute("data-fade") === "true" && !isIE) {
+            ctx.$win.on("resize", $.proxy(ctx.moveLayer, this, ctx));
+            if (this.getAttribute("data-fade") === "true") {
               ctx.$doc.on("scroll", $.proxy(ctx.fadeLayer, this, ctx));
+              ctx.$win.on("resize", $.proxy(ctx.fadeLayer, this, ctx));
             }
-            if (this.getAttribute("data-fade") === "true" && !isIE) {
-              ctx.$doc.on("resize", $.proxy(ctx.fadeLayer, this, ctx));
-            }
+          } else {
+            ctx.$win.on("orientationchange", $.proxy(ctx.moveLayer, this, ctx));
           }
         });
+        ctx.$canvas = ctx.$element.find(".rd-parallax-inner");
+        if (ctx.$element.attr("data-fit-to-parent") === "true") {
+          ctx.$win.on("resize", $.proxy(ctx.fitCanvas, ctx.$canvas, ctx));
+        }
+        if (!isMobile) {
+          ctx.$win.on("resize", $.proxy(ctx.resizeWrap, ctx.$element[0], ctx));
+          ctx.$win.on("resize", $.proxy(ctx.resizeCanvas, ctx.$canvas[0], ctx));
+          ctx.$doc.on("scroll", $.proxy(ctx.moveCanvas, ctx.$canvas[0], ctx));
+          ctx.$win.on("resize", $.proxy(ctx.moveCanvas, ctx.$canvas[0], ctx));
+        }
         ctx.$win.trigger("resize");
+        ctx.$win.trigger("orientationchange");
         ctx.$doc.trigger("scroll");
+        ctx.$win.load(function() {
+          ctx.$win.trigger("resize");
+          ctx.$win.trigger("orientationchange");
+          return ctx.$doc.trigger("scroll");
+        });
       };
 
 
@@ -116,17 +156,51 @@
        */
 
       RDParallax.prototype.moveLayer = function(ctx) {
-        var ch, dir, h, offt, pos, scrt, v, wh;
+        var ch, dh, dir, dy, h, offt, pos, scrt, v, wh;
         scrt = ctx.$win.scrollTop();
         offt = ctx.$element.offset().top;
         wh = ctx.$win.height();
         ch = ctx.$element.height();
+        dh = ctx.$doc.height();
         h = this.offsetHeight;
         v = Math.max(parseFloat(v), 0);
         dir = ctx.getAttribute(this, 'direction') === "inverse" ? -1 : 1;
         v = dir * Math.min(parseFloat(ctx.getAttribute(this, 'speed')), 2.0);
-        pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch) / 2 * v;
-        return $(this).css(ctx.transform(pos, ctx));
+        if (this.getAttribute("data-type") !== "media") {
+          if (offt < wh || offt > dh - wh) {
+            if (offt < wh) {
+              dy = offt / (wh - ch) || 0;
+            } else {
+              dy = (offt - dh + wh) / (wh - ch) || 0;
+            }
+          } else {
+            dy = 0.5;
+          }
+        } else {
+          dy = 0.5;
+        }
+        pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch) * dy * v;
+        if (scrt + wh >= offt && scrt <= offt + ch) {
+          return $(this).css(ctx.transform(pos, ctx));
+        }
+      };
+
+
+      /**
+       * Move Canvas
+       * @param {object} ctx
+       * @protected
+       */
+
+      RDParallax.prototype.moveCanvas = function(ctx, e) {
+        var canvas, offt, pos, scrt;
+        canvas = $(this);
+        scrt = ctx.$win.scrollTop();
+        offt = ctx.$element.offset().top;
+        pos = (ctx.$anchor ? ctx.$element.position().top : offt - scrt);
+        return canvas.css({
+          "top": pos
+        });
       };
 
 
@@ -189,6 +263,42 @@
 
 
       /**
+       * Resize Main parallax wrap
+       * @param {object} ctx
+       * @protected
+       */
+
+      RDParallax.prototype.resizeWrap = function(ctx) {
+        return this.style.height = ctx.px(ctx.$canvas.outerHeight());
+      };
+
+
+      /**
+       * Resize Canvas
+       * @param {object} ctx
+       * @protected
+       */
+
+      RDParallax.prototype.resizeCanvas = function(ctx) {
+        var $canvas;
+        $canvas = $(this);
+        return $canvas.css({
+          "position": "fixed",
+          "left": (ctx.$anchor ? ctx.$element.offset().left - ctx.$anchor.offset().left : ctx.$element.offset().left),
+          "width": ctx.$element.width()
+        });
+      };
+
+      RDParallax.prototype.fitCanvas = function(ctx) {
+        return setTimeout(function() {
+          return ctx.$canvas.css({
+            "height": ctx.$element.parent().parent().height()
+          });
+        });
+      };
+
+
+      /**
        * Calc media layer height.
        * @param {number} wh
        * @param {number} v
@@ -200,11 +310,8 @@
         var dh;
         v = Math.max(parseFloat(v), 0);
         v = Math.min(parseFloat(v), 2.0);
-        dh = 0;
-        if (dir === -1) {
-          dh = (ch + wh) * v;
-        }
-        return ch + dh + (v <= 1 ? (wh - ch) * v : wh * v);
+        dh = dir === -1 ? (ch + wh) * v : 0;
+        return (ch + dh + (v <= 1 ? Math.abs(wh - ch) * v : wh * v)) + 56;
       };
 
 
@@ -241,17 +348,10 @@
        */
 
       RDParallax.prototype.transform = function(pos, ctx) {
-        if (isIE && ieVersion < 10) {
-          return {
-            "transform": "translate(0," + pos + "px)"
-          };
-        } else {
-          return {
-            "-webkit-transform": "translate3d(0," + pos + "px, 0)",
-            "transform": "translate3d(0," + pos + "px, 0)",
-            "transition": isMobile ? "" + ctx.options.duration + "ms" + " transform " + ctx.options.easing : "none"
-          };
-        }
+        return {
+          "-webkit-transform": "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + pos + ",0,1)",
+          "transform": "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + pos + ",0,1)"
+        };
       };
 
 

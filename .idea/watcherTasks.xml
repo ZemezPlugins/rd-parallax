@@ -59,7 +59,7 @@
       </option>
       <option name="outputFromStdout" value="false" />
       <option name="program" value="$USER_HOME$/AppData/Roaming/npm/coffee.cmd" />
-      <option name="scopeName" value="Project Files" />
+      <option name="scopeName" value="Sources" />
       <option name="trackOnlyRoot" value="true" />
       <option name="workingDir" value="$FileDir$" />
       <envs />
@@ -78,7 +78,7 @@
       </option>
       <option name="outputFromStdout" value="false" />
       <option name="program" value="$PROJECT_DIR$/../../dev/rd-scripts/rd-parallax/vendor/compiler.jar" />
-      <option name="scopeName" value="JSMin" />
+      <option name="scopeName" value="Dist" />
       <option name="trackOnlyRoot" value="true" />
       <option name="workingDir" value="$FileDir$" />
       <envs />

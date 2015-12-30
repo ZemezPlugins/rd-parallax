@@ -601,6 +601,12 @@ html body .page { // Increases specificity to use with background helpers
   }
 }
 
+.rd-parallax{
+  &, #{headings()}{
+    color: #FFF;
+  }
+}
+
 
 //*
 //Imports
@@ -615,8 +621,6 @@ html body .page { // Increases specificity to use with background helpers
 * @description  This section holds some of style declarations for necessary
 *               scripts
 */
-
-@import "extensions/_rd-parallax.scss";
 @import "extensions/_swiper.scss";
 @import "extensions/_vide.scss";
 @import "extensions/_ui-to-top.scss";

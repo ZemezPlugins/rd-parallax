@@ -274,9 +274,7 @@ function isIE() {
         include('../dist/js/jquery.rd-parallax.min.js');
 
         $(document).ready(function () {
-            o.RDParallax({
-                direction: ($('html').hasClass("smoothscroll") || $('html').hasClass("smoothscroll-all")) && !isIE() ? "normal" : "inverse"
-            });
+            o.RDParallax();
         });
     }
 })(jQuery);

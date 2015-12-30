@@ -57,34 +57,6 @@
     значение скорости равно 1 - получаем эмуляцию css свойства background-attachment: fixed
 </p>
 
-<h5>duration</h5>
-<dl class="inline-term">
-    <dt>Тип</dt>
-    <dd>Number</dd>
-</dl>
-<dl class="inline-term">
-    <dt>Значение по-умолчанию</dt>
-    <dd>200</dd>
-</dl>
-
-<p>
-    Время анимации движения параллакса (необходимо исключительно для мобильных устройтв)
-</p>
-
-<h5>easing</h5>
-<dl class="inline-term">
-    <dt>Тип</dt>
-    <dd>String</dd>
-</dl>
-<dl class="inline-term">
-    <dt>Значение по-умолчанию</dt>
-    <dd>linear</dd>
-</dl>
-
-<p>
-    Переменная функция анимации движения параллакса (необходимо исключительно для мобильных устройтв)
-</p>
-
 <h5>screenAliases</h5>
 <dl class="inline-term">
     <dt>Тип</dt>
