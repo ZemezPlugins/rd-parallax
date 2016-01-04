@@ -166,6 +166,20 @@
     скроллу, если inverse - в противоположном направлении.
 </p>
 
+<h5>data-offset, data-xs-offset, data-sm-offset, data-md-offset, data-lg-offset</h5>
+<dl class="inline-term">
+    <dt>Тип</dt>
+    <dd>Integer</dd>
+</dl>
+<dl class="inline-term">
+    <dt>Значение</dt>
+    <dd>0</dd>
+</dl>
+
+<p>
+    Указывает дополнительный офсет для слоя параллакса на соответствующем разрешении.
+</p>
+
 <h5>data-fit-container</h5>
 <dl class="inline-term">
     <dt>Тип</dt>
@@ -178,6 +192,34 @@
 
 <p>
     Если true - преравнивает высоту параллакса к высоте родительского контейнера.
+</p>
+
+<h5>data-unbound</h5>
+<dl class="inline-term">
+    <dt>Тип</dt>
+    <dd>Boolean</dd>
+</dl>
+<dl class="inline-term">
+    <dt>Значение</dt>
+    <dd>false, true</dd>
+</dl>
+
+<p>
+    Если true - разрешает движение слоя вне границ сцены параллакса.
+</p>
+
+<h5>data-agent</h5>
+<dl class="inline-term">
+    <dt>Тип</dt>
+    <dd>Selector</dd>
+</dl>
+<dl class="inline-term">
+    <dt>Значение</dt>
+    <dd>document</dd>
+</dl>
+
+<p>
+    Указывает на элемент, относительно которого будет выполняться позиционирование слоев параллакса. По-умолчанию - объект Document.
 </p>
 
 

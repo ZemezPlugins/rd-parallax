@@ -36,12 +36,15 @@
         blur: true,
         direction: 'normal',
         speed: 1,
+        offset: 0,
         screenAliases: {
           0: '',
           480: 'xs',
           768: 'sm',
           992: 'md',
-          1200: 'lg'
+          1200: 'lg',
+          1920: 'xl',
+          2560: 'xxl'
         }
       };
 
@@ -156,7 +159,7 @@
        */
 
       RDParallax.prototype.moveLayer = function(ctx) {
-        var ch, dh, dir, dy, h, offt, pos, scrt, v, wh;
+        var agent, ch, dh, dir, dy, h, offt, pos, scrt, v, wh;
         scrt = ctx.$win.scrollTop();
         offt = ctx.$element.offset().top;
         wh = ctx.$win.height();
@@ -166,12 +169,19 @@
         v = Math.max(parseFloat(v), 0);
         dir = ctx.getAttribute(this, 'direction') === "inverse" ? -1 : 1;
         v = dir * Math.min(parseFloat(ctx.getAttribute(this, 'speed')), 2.0);
-        if (this.getAttribute("data-type") !== "media") {
+        agent = this.getAttribute("data-agent");
+        if ((agent = this.getAttribute("data-agent")) != null) {
+          if ((agent = $(agent)).length) {
+            dy = (offt + wh - (agent.offset().top + wh)) / (wh - ch);
+          } else {
+            dy = 0.5;
+          }
+        } else if (this.getAttribute("data-type") !== "media") {
           if (offt < wh || offt > dh - wh) {
             if (offt < wh) {
               dy = offt / (wh - ch);
             } else {
-              dy = (offt - dh + wh) / (wh - ch);
+              dy = (offt + wh - dh) / (wh - ch);
             }
             if (!isFinite(dy)) {
               dy = 0;
@@ -183,8 +193,8 @@
           dy = 0.5;
         }
         if (!isMobile) {
-          pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch) * dy * v;
-          if (scrt + wh >= offt && scrt <= offt + ch) {
+          pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch) * dy * v + parseInt(ctx.getAttribute(this, 'offset'));
+          if ((scrt + wh >= offt && scrt <= offt + ch) || this.getAttribute("data-unbound") === "true") {
             return $(this).css(ctx.transform(pos, ctx));
           }
         } else {

@@ -30,12 +30,15 @@
       blur: true
       direction: 'normal'
       speed: 1
+      offset: 0
       screenAliases: {
         0: ''
         480: 'xs'
         768: 'sm'
         992: 'md'
         1200: 'lg'
+        1920: 'xl'
+        2560: 'xxl'
       }
 
     constructor: (element, options) ->
@@ -174,16 +177,26 @@
       v = Math.max(parseFloat(v), 0)
       dir = if ctx.getAttribute(@, 'direction') is "inverse" then -1 else 1
       v = dir * Math.min(parseFloat(ctx.getAttribute(@, 'speed')), 2.0)
+      agent = @.getAttribute("data-agent")
 
-      if @.getAttribute("data-type") isnt "media"
+      # If agent is set
+      if (agent = @.getAttribute("data-agent"))?
+        # Agent layer position correction
+        if (agent = $(agent)).length
+          dy = (offt + wh - (agent.offset().top + wh)) / (wh - ch)
+        else
+          dy = 0.5
+
+      # Else calc with document agent
+      else if @.getAttribute("data-type") isnt "media"
         if offt < wh or offt > dh - wh
           # First Screen layer position correction
           if offt < wh
             dy = offt / (wh - ch)
-              
+
           # Last Screen layer position correction
           else
-            dy = (offt - dh + wh) / (wh - ch)
+            dy = (offt + wh - dh ) / (wh - ch)
 
           # Set Layer position correction to zero if is NaN
           if !isFinite(dy)
@@ -193,12 +206,15 @@
       else
         dy = 0.5
 
+
+
+
       # Move layer on Desktop
       if !isMobile
-        pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch)*dy*v
+        pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch)*dy*v + parseInt(ctx.getAttribute(@, 'offset'))
 
         # Check layers is in viewport
-        if (scrt + wh >= offt and scrt <= offt + ch)
+        if (scrt + wh >= offt and scrt <= offt + ch) or @.getAttribute("data-unbound") is "true"
           $(@).css(ctx.transform(pos, ctx))
 
       # Send layer to scene center of devices
