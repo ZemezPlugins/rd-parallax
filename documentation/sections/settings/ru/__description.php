@@ -166,3 +166,18 @@
     скроллу, если inverse - в противоположном направлении.
 </p>
 
+<h5>data-fit-container</h5>
+<dl class="inline-term">
+    <dt>Тип</dt>
+    <dd>Boolean</dd>
+</dl>
+<dl class="inline-term">
+    <dt>Значение</dt>
+    <dd>false, true</dd>
+</dl>
+
+<p>
+    Если true - преравнивает высоту параллакса к высоте родительского контейнера.
+</p>
+
+
