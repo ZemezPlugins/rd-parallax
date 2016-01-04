@@ -11,7 +11,7 @@
   ###
   isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
   isSafariIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
-  isIE = navigator.appVersion.indexOf("MSIE") isnt -1
+  isIE = navigator.appVersion.indexOf("MSIE") isnt -1 || navigator.appVersion.indexOf('Trident/') > 0
 
   ###*
    * Creates a parallax.
@@ -129,7 +129,7 @@
 
         # Create move handler for device fallback
         else
-          ctx.$win.on("orientationchange", $.proxy(ctx.moveLayer, @, ctx))
+          ctx.$win.on("resize orientationchange", $.proxy(ctx.moveLayer, @, ctx))
 
         return
 
@@ -177,20 +177,36 @@
 
       if @.getAttribute("data-type") isnt "media"
         if offt < wh or offt > dh - wh
+          # First Screen layer position correction
           if offt < wh
-            dy = offt / (wh - ch) || 0
+            dy = offt / (wh - ch)
+              
+          # Last Screen layer position correction
           else
-            dy = (offt - dh + wh) / (wh - ch) || 0
+            dy = (offt - dh + wh) / (wh - ch)
+
+          # Set Layer position correction to zero if is NaN
+          if !isFinite(dy)
+            dy = 0
         else
           dy = 0.5
       else
         dy = 0.5
 
-      pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch)*dy*v
+      # Move layer on Desktop
+      if !isMobile
+        pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch)*dy*v
 
-      # Check layers is in viewport
-      if (scrt + wh >= offt and scrt <= offt + ch)
+        # Check layers is in viewport
+        if (scrt + wh >= offt and scrt <= offt + ch)
+          $(@).css(ctx.transform(pos, ctx))
+
+      # Send layer to scene center of devices
+      else
+        pos = (ch - h) / 2
         $(@).css(ctx.transform(pos, ctx))
+
+
 
     ###*
      * Move Canvas
@@ -274,8 +290,8 @@
     resizeCanvas: (ctx) ->
       $canvas = $(@)
       $canvas.css({
-        "position": "fixed"
-        "left": (if ctx.$anchor then ctx.$element.offset().left - ctx.$anchor.offset().left else ctx.$element.offset().left)
+        "position": if isIE && ctx.$anchor then "relative" else "fixed"
+        "left": (if isIE then "auto" else (if ctx.$anchor then ctx.$element.offset().left - ctx.$anchor.offset().left else ctx.$element.offset().left))
         "width": ctx.$element.width()
       })
 

@@ -455,13 +455,7 @@ button.swiper-pagination-bullet {
 }
  
 .swiper-slide{
-  white-space: nowrap;
-
-  &, #{headings()}{
-    color: $white;
-  }
-
-  &:not(.vide):not(.rd-parallax):before,
+  &:not(.vide):not(.rd-parallax-wrap):before,
   .parallax_cnt:before, .vide__body:before{
     content: '';
     display: inline-block;

@@ -17,7 +17,7 @@
     var RDParallax, isIE, isMobile, isSafariIOS;
     isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     isSafariIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
-    isIE = navigator.appVersion.indexOf("MSIE") !== -1;
+    isIE = navigator.appVersion.indexOf("MSIE") !== -1 || navigator.appVersion.indexOf('Trident/') > 0;
 
     /**
      * Creates a parallax.
@@ -125,7 +125,7 @@
               ctx.$win.on("resize", $.proxy(ctx.fadeLayer, this, ctx));
             }
           } else {
-            ctx.$win.on("orientationchange", $.proxy(ctx.moveLayer, this, ctx));
+            ctx.$win.on("resize orientationchange", $.proxy(ctx.moveLayer, this, ctx));
           }
         });
         ctx.$canvas = ctx.$element.find(".rd-parallax-inner");
@@ -169,9 +169,12 @@
         if (this.getAttribute("data-type") !== "media") {
           if (offt < wh || offt > dh - wh) {
             if (offt < wh) {
-              dy = offt / (wh - ch) || 0;
+              dy = offt / (wh - ch);
             } else {
-              dy = (offt - dh + wh) / (wh - ch) || 0;
+              dy = (offt - dh + wh) / (wh - ch);
+            }
+            if (!isFinite(dy)) {
+              dy = 0;
             }
           } else {
             dy = 0.5;
@@ -179,8 +182,13 @@
         } else {
           dy = 0.5;
         }
-        pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch) * dy * v;
-        if (scrt + wh >= offt && scrt <= offt + ch) {
+        if (!isMobile) {
+          pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch) * dy * v;
+          if (scrt + wh >= offt && scrt <= offt + ch) {
+            return $(this).css(ctx.transform(pos, ctx));
+          }
+        } else {
+          pos = (ch - h) / 2;
           return $(this).css(ctx.transform(pos, ctx));
         }
       };
@@ -283,8 +291,8 @@
         var $canvas;
         $canvas = $(this);
         return $canvas.css({
-          "position": "fixed",
-          "left": (ctx.$anchor ? ctx.$element.offset().left - ctx.$anchor.offset().left : ctx.$element.offset().left),
+          "position": isIE && ctx.$anchor ? "relative" : "fixed",
+          "left": (isIE ? "auto" : (ctx.$anchor ? ctx.$element.offset().left - ctx.$anchor.offset().left : ctx.$element.offset().left)),
           "width": ctx.$element.width()
         });
       };
