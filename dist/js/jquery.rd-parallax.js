@@ -159,7 +159,16 @@
        */
 
       RDParallax.prototype.moveLayer = function(ctx) {
-        var agent, ch, dh, dir, dy, h, offt, pos, scrt, v, wh;
+        var agent, ch, dh, dir, dy, h, offt, pos, sceneOn, scrt, v, wh;
+        if ((sceneOn = ctx.getAttribute(ctx.$element[0], 'on')) != null) {
+          if (sceneOn !== "true") {
+            $(this).css({
+              "-webkit-transform": "none",
+              "transform": "none"
+            });
+            return;
+          }
+        }
         scrt = ctx.$win.scrollTop();
         offt = ctx.$element.offset().top;
         wh = ctx.$win.height();

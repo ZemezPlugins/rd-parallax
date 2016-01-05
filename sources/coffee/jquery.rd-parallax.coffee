@@ -168,6 +168,12 @@
      * @protected
     ###
     moveLayer: (ctx) ->
+      # Dont move if parallax is disabled
+      if (sceneOn = ctx.getAttribute(ctx.$element[0], 'on'))?
+        if sceneOn isnt "true"
+          $(@).css({"-webkit-transform": "none", "transform": "none"})
+          return  
+
       scrt = ctx.$win.scrollTop()
       offt = ctx.$element.offset().top
       wh = ctx.$win.height()

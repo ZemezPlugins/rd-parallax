@@ -71,6 +71,23 @@
     Объект, содержащий алиасы имен для создания адаптивных настроек слоев паралакса
 </p>
 
+<h3>
+    Настройки сцены
+</h3>
+
+<h5>data-on, data-xs-on, data-sm-on, data-md-on, data-lg-on</h5>
+<dl class="inline-term">
+    <dt>Тип</dt>
+    <dd>Boolean</dd>
+</dl>
+<dl class="inline-term">
+    <dt>Значение</dt>
+    <dd>true, false</dd>
+</dl>
+
+<p>
+    Отвечает за включение/отключение движения слоев в сцене.
+</p>
 
 <h3>
     Настройки слоев
