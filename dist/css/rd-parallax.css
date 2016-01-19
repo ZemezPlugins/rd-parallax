@@ -5,25 +5,20 @@
 *
 * @author       Evgeniy Gusarov
 * @link         https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
-* @version      3.0.0
+* @version      3.5.0
 */
 .rd-parallax-inner {
+  position: relative;
   overflow: hidden;
   -webkit-transform: translate3d(0px, 0px, 0px);
   transform: translate3d(0px, 0px, 0px); }
-.rd-parallax-outer {
-  overflow: hidden; }
-  .rd-parallax-outer .rd-parallax-inner {
-    overflow: visible; }
 .rd-parallax-layer[data-type="media"] {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  pointer-events: none; }
+  height: 100%; }
   .rd-parallax-layer[data-type="media"] iframe {
     width: 100%;
     height: 100%; }
@@ -31,5 +26,3 @@
   -webkit-background-size: cover;
   background-size: cover;
   background-position: center center; }
-.rd-parallax-layer[data-type="html"] {
-  position: relative; }

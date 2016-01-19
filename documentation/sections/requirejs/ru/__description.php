@@ -99,8 +99,7 @@ requirejs.config({
 <code>
 <pre>
 requirejs(["jquery", "jquery.rd-parallax"], function($, parallax) {
-  var o = $(".rd-parallax");
-  o.RDParallax();
+  $.RDParallax();
 });
 </pre>
 </code>

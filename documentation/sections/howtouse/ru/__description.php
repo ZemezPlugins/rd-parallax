@@ -89,7 +89,7 @@
 <pre>
 &lt;script&gt;
   $(document).ready(function () {
-    o.RDParallax({}); // Additional options
+    $.RDParallax({}); // Additional options
   });
 &lt;/script&gt;
 </pre>
