@@ -274,7 +274,7 @@ function isIE() {
         include('../dist/js/jquery.rd-parallax.min.js');
 
         $(document).ready(function () {
-            o.RDParallax();
+            $.RDParallax();
         });
     }
 })(jQuery);

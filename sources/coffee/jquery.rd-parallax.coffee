@@ -2,16 +2,48 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.2.1
+ * @version      3.5.0
 ###
 (($, document, window) ->
   ###*
-   * Initial flags
-   * @public
+   * Compatibility flags
   ###
   isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  isChrome = /Chrome/.test(navigator.userAgent)
+  isWebkit = (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) || (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor))
+  isChromeIOS = isMobile and /crios/i.test(navigator.userAgent)
   isSafariIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
   isIE = navigator.appVersion.indexOf("MSIE") isnt -1 || navigator.appVersion.indexOf('Trident/') > 0
+  hasClassList = document.body.classList?
+
+  ###*
+   * The requestAnimationFrame polyfill
+   * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+  ###
+  (()->
+    lastTime = 0
+    vendors = ['ms', 'moz', 'webkit', 'o']
+
+    for vendor in vendors
+      window.requestAnimationFrame = window["#{vendor}RequestAnimationFrame"]
+      window.cancelAnimationFrame = window["#{vendor}CancelAnimationFrame"] || window["#{vendor}CancelRequestAnimationFrame"];
+
+    if !window.requestAnimationFrame
+      window.requestAnimationFrame = (callback, element)->
+        currTime = new Date().getTime()
+        timeToCall = Math.max(0, 16 - (currTime - lastTime))
+        id = window.setTimeout(()->
+          callback(currTime + timeToCall)
+          return
+        , timeToCall)
+        lastTime = currTime + timeToCall
+        return id
+
+    if !window.cancelAnimationFrame
+      window.cancelAnimationFrame = (id)->
+        clearTimeout(id)
+  )
+
 
   ###*
    * Creates a parallax.
@@ -23,45 +55,536 @@
   class RDParallax
 
     ###*
-     * Default options for parallax.
+     * Creates a parallax layer.
+     * @class Layer.
      * @public
+     * @param {HTMLElement} element - The element to create a layer for.
+     * @param {object} aliases - An object with width breakpoints aliases
+     * @param {numbeer} windowWidth - current window width
     ###
-    Defaults:
-      blur: true
-      direction: 'normal'
-      speed: 1
-      offset: 0
-      screenAliases: {
-        0: ''
-        480: 'xs'
-        768: 'sm'
-        992: 'md'
-        1200: 'lg'
-        1920: 'xl'
-        2560: 'xxl'
-      }
+    class Layer
+      constructor: (element, aliases, windowWidth, windowHeight, sceneOffset, sceneHeight, sceneOn) ->
+        # Value is using to amend scroll issues with fixed elements in webkit
+        @.amend = if isWebkit || isIE || isMobile then 60 else 0
+        @.element = element
+        @.aliases = aliases
 
-    constructor: (element, options) ->
-      @.options = $.extend(true, {}, @.Defaults, options)
-      @.$element = $(element)
-      @.$canvas = false
-      @.$win = $(window)
-      @.$doc = $(document)
-      @.$anchor = false
-      @.initialize()
+        @.type = element.getAttribute("data-type") || "html"
+        @.holder = @.createHolder() if @.type is "html"
+        @.direction = if element.getAttribute("data-direction") is "normal" or !element.getAttribute("data-direction")? then 1 else -1
+        @.fade = element.getAttribute("data-fade") is "true"
+        @.blur = element.getAttribute("data-blur") is "true"
+        @.boundTo = document.querySelector(element.getAttribute("data-bound-to"))
+        @.url = element.getAttribute("data-url") if @.type is "media"
+        @.responsive = @.getResponsiveOptions()
+
+        # Use CSS Absolute for layer position if not IE
+        if (!isIE and !isMobile) or isChromeIOS
+          @.element.style["position"] = "absolute"
+        # Use CSS Fixed && CSS Clip hack if IE
+        else
+          @.element.style["position"] = "fixed"
+
+        switch @.type
+          when "media"
+            @.element.style["background-image"] = "url(#{@.url})" if @.url?
+          when "html"
+            # Push HTML layer to front for IE
+            if isIE and isMobile
+              @.element.style["z-index"] = 1
+
+        @.refresh(windowWidth, windowHeight, sceneOffset, sceneHeight, sceneOn)
+        return
+
+      ###*
+      * Refresh layer size statements
+      * @param {number} window width
+      * @public
+      ###
+      refresh: (windowWidth, windowHeight, sceneOffset, sceneHeight, sceneOn)->
+        layer = @
+
+        layer.speed = layer.getOption("speed", windowWidth) || 0
+        layer.offset = layer.getOption("offset", windowWidth) || 0
+
+        if (isIE or isMobile) and !isChromeIOS
+          if sceneOn
+            layer.element.style["position"] = "fixed"
+          else
+            layer.element.style["position"] = "absolute"
+
+        switch layer.type
+          when "media"
+            layer.offsetHeight = layer.getMediaHeight(windowHeight, sceneHeight, layer.speed, layer.direction)
+            layer.element.style["height"] = "#{layer.offsetHeight}px"
+          when "html"
+            layer.element.style["width"] = "#{@.holder.offsetWidth}px"
+            layer.offsetHeight = layer.element.offsetHeight
+            layer.holder.style["height"] = "#{layer.offsetHeight}px"
+
+            # Bound layer to holder by css absolute if not IE
+            if (!isIE and !isMobile) or isChromeIOS
+              layer.element.style["left"] = 0
+              layer.element.style["top"] = 0
+            # Bound layer to holder by css fixed for IE
+            else
+              if sceneOn
+                layer.element.style["left"] = "#{layer.getOffset(layer.holder).left}px"
+                layer.element.style["top"] = "#{layer.getOffset(layer.holder).top - sceneOffset}px"
+                layer.holder.style["position"] = "static"
+              else
+                layer.element.style["left"] = 0
+                layer.element.style["top"] = 0
+                layer.holder.style["position"] = "relative"
+          when "custom"
+            layer.offsetHeight = layer.element.offsetHeight
+
+      ###*
+      * Creates a static layer holder element
+      * @public
+      * @returns {element} holder
+      ###
+      createHolder: ()->
+        layer = @
+        holder = document.createElement("div")
+
+        if hasClassList
+          holder.classList.add("rd-parallax-layer-holder")
+        else
+          holder.className = "rd-parallax-layer-holder"
+
+        layer.element.parentNode.insertBefore(holder, layer.element)
+        holder.appendChild(layer.element)
+
+        # Create relative holder if is not IE
+        if (!isIE and !isMobile) or isChromeIOS
+          holder.style["position"] = "relative"
+
+        return holder
+
+
+      ###*
+      * Gets specific option of layer
+      * @public
+      * @param {string} key
+      * @param {number} window width
+      * @returns {object} value
+      ###
+      getOption: (key, windowWidth)->
+        layer = @
+        for point of layer.responsive
+          if point <= windowWidth then targetPoint = point
+        return layer.responsive[targetPoint][key]
+
+      ###*
+      * Creates a set of responsive options of the layer
+      * @public
+      * @returns {object} options
+      ###
+      getResponsiveOptions: ()->
+        responsive = {}
+        resolutions = []
+        aliases = []
+
+        for i, alias of @.aliases
+          resolutions.push(i)
+          aliases.push(alias)
+
+        for point, i in resolutions
+          responsive[point] = {}
+
+          while (j = i) >= -1
+            if !responsive[point]["speed"] and (value = @.element.getAttribute("data#{aliases[j]}speed"))
+              responsive[point]["speed"] = @.getSpeed(value)
+
+            if !responsive[point]["offset"] and (value = @.element.getAttribute("data#{aliases[j]}offset"))
+              responsive[point]["offset"] = parseInt(value)
+
+            i--
+
+        return responsive
+
+      ###*
+      * Fade layer according to its position in scene
+      * @public
+      * @param {number} sceneOffset - current scene offset
+      * @param {number} sceneHeight - current scene height
+      ###
+      fuse: (sceneOffset, sceneHeight)->
+        layer = @
+
+        offsetTop = layer.getOffset(layer.element).top + layer.element.getBoundingClientRect().top
+
+        sceneDevider = sceneOffset + sceneHeight / 2.0
+        layerDevider = offsetTop + layer.offsetHeight / 2.0
+        pos = sceneHeight / 6.0
+
+        if sceneDevider + pos > layerDevider and sceneDevider - pos < layerDevider
+          layer.element.style["opacity"] = 1
+        else
+          if sceneDevider - pos < layerDevider
+            opacity = 1 + ((sceneDevider + pos - layerDevider) / sceneHeight / 3.0 * 10)
+          else
+            opacity = 1 - ((sceneDevider - pos - layerDevider) / sceneHeight / 3.0 * 10)
+
+          layer.element.style["opacity"] = if opacity < 0 then 0 else if opacity > 1 then 1 else opacity.toFixed(2)
+
+
+        return
+
+      ###*
+      * Move layer in scene
+      * @public
+      * @param {number} scrollY - current scroll top
+      * @param {number} windowWidth - current window width
+      * @param {number} windowHeight - current window height
+      * @param {number} sceneOffset - current scene offset top
+      * @param {number} sceneHeight - current scene height
+      * @param {number} documentHeight - current scene height
+      * @param {number} agentOffset - current agent offset
+      ###
+      move: (scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, sceneOn, agentOffset, inputFocus)->
+        layer = @
+
+        if !sceneOn
+          if isWebkit
+            layer.element.style["-webkit-transform"] = "translate3d(0,0,0)"
+          layer.element.style["transform"] = "translate3d(0,0,0)"
+          return
+
+        # Calculate speed by absolute position if not IE
+        if (!isIE and !isMobile) or (layer.type is "html" and inputFocus) or isChromeIOS
+          v = layer.speed * layer.direction
+        # Calculate speed by fixed position for IE
+        else
+          v = layer.speed * layer.direction - 1
+
+        h = layer.offsetHeight
+
+        # Agent layer position correction
+        if agentOffset?
+          dy = (sceneOffset + windowHeight - (agentOffset + windowHeight)) / (windowHeight - sceneHeight)
+        # Else calc with document agent
+        else if @.type isnt "media"
+          if sceneOffset < windowHeight or sceneOffset > documentHeight - windowHeight
+            # First Screen layer position correction
+            if sceneOffset < windowHeight
+              dy = sceneOffset / (windowHeight - sceneHeight)
+
+            # Last Screen layer position correction
+            else
+              dy = (sceneOffset + windowHeight - documentHeight ) / (windowHeight - sceneHeight)
+
+            # Set Layer position correction to zero if is NaN
+            if !isFinite(dy)
+              dy = 0
+          else
+            dy = 0.5
+        else
+          dy = 0.5
+
+        # Disable Layer scrolling in iOS Chrome
+        if isChromeIOS
+          pos = (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*v + layer.offset
+        else
+          pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*v + layer.offset
+
+        if isIE or isMobile
+          if agentOffset?
+            layer.element.style["top"] = "#{sceneOffset - agentOffset}px"
+
+        if isSafariIOS
+          if inputFocus
+              pos += sceneOffset
+
+        # Set vendor for old safari and chrome
+        if isWebkit
+          @.element.style["-webkit-transform"] = "translate3d(0,#{pos}px,0)"
+        @.element.style["transform"] = "translate3d(0,#{pos}px,0)"
+
+        return
+
+      ###*
+      * Normalize layer speed
+      * @public
+      * @param {number} value - speed
+      * @returns {number} normalized speed
+      ###
+      getSpeed: (value)->
+        return Math.min(Math.max(parseFloat(value), 0), 2.0)
+
+      ###*
+      * Calculate media layer height
+      * @public
+      * @param {number} windowHeight - current window height
+      * @param {number} sceneHeight - current scene height
+      * @param {number} speed - current speed
+      * @param {number} direction - movement direction
+      * @returns {number} media layer height
+      ###
+      getMediaHeight: (windowHeight, sceneHeight, speed, direction)->
+        directionModifier = if direction is -1 then (sceneHeight + windowHeight) * speed else 0
+
+        return (sceneHeight + directionModifier + if speed <= 1 then Math.abs(windowHeight - sceneHeight) * speed else windowHeight * speed) + @.amend*2
+
+      ###*
+       * Calc the element offset relative to document. Method is similar to $.offset()
+       * @public
+       * @param {element} element - HTML Element
+       * @returns {object} top and left offsets
+      ###
+      getOffset: (element)->
+        bound = element.getBoundingClientRect()
+        left = bound.left + (window.scrollX || window.pageXOffset)
+        top = bound.top + (window.scrollY || window.pageYOffset)
+
+        return {top: top, left: left}
 
     ###*
-     * Initializes the Parallax.
-     * @protected
+     * Creates a parallax scene.
+     * @class Scene.
+     * @public
+     * @param {HTMLElement} element - The element to create a scene for.
+     * @param {object} aliases - An object with width breakpoints aliases
+     * @param {numbeer} windowWidth - current window width
     ###
-    initialize: () ->
-      ctx = @
+    class Scene
+      constructor: (element, aliases, windowWidth, windowHeight) ->
+        scene = @
 
-      ctx
-      .$element
-      .parents()
-      .each(()->
-        # Check if parallax canvas is inside of transformed element
+        # Value is using to amend scroll issues with fixed elements in webkit
+        scene.amend = if isWebkit then 60 else 0
+        scene.element = element
+        scene.aliases = aliases
+
+        scene.on = true
+        scene.agent = document.querySelector(element.getAttribute("data-agent"))
+        scene.anchor = scene.findAnchor()
+        scene.canvas = scene.createCanvas()
+        scene.layers = scene.createLayers(windowWidth)
+        scene.fitTo = scene.getFitElement()
+        scene.responsive = scene.getResponsiveOptions()
+
+        scene.refresh(windowWidth, windowHeight)
+
+      ###*
+       * Finds an element that layer will fit to
+       * @public
+       * @returns {element} fit element
+      ###
+      getFitElement: ()->
+        scene = @
+
+        if (fitTo = scene.element.getAttribute("data-fit-to"))?
+          if fitTo is "parent"
+            return scene.element.parentNode
+          else
+            return document.querySelector(fitTo)
+        else
+          return null
+
+      ###*
+       * Checks if parallax scene is inside of element with CSS Transform
+       * @public
+       * @returns {element} Parent element with CSS Transform or null
+      ###
+      findAnchor: ()->
+        scene = @
+
+        parent = scene.element.parentNode
+        while parent? and parent isnt document
+          if scene.isTransformed.call(parent)
+            return parent
+          parent = parent.parentNode
+
+        return null  
+
+      ###*
+       * Creates a parallax canvas element
+       * @public
+       * @returns {element} canvas
+      ###
+      createCanvas: ()->
+        scene = @
+        canvas = document.createElement("div")
+
+        if hasClassList
+          canvas.classList.add("rd-parallax-inner")
+        else
+          canvas.className = "rd-parallax-inner"
+
+        scene.element.appendChild(canvas)
+
+        while scene.element.firstChild isnt canvas
+          canvas.appendChild(scene.element.firstChild)
+
+        scene.element.style["position"] = "relative"
+        scene.element.style["overflow"] = "hidden"
+
+        # Use CSS Fixed to create canvas if is not IE or not mobile
+        if !isIE and !isMobile
+          canvas.style["position"] = "fixed"
+        # Use CSS Clip hack for ie and mobile
+        else
+          canvas.style["position"] = "absolute"
+          canvas.style["clip"] = "rect(0, auto, auto, 0)"
+
+          # Fix IE input pointer issue inside CSS Clip
+          if isIE
+            canvas.style["transform"] = "translate3d(0,0,0)"
+          else
+            canvas.style["transform"] = "none"
+
+
+        canvas.style["left"] = "#{scene.offsetLeft}px"
+        canvas.style["top"] = 0
+
+        if isWebkit
+          canvas.style["margin-top"] = "-#{scene.amend}px"
+          canvas.style["padding"] = "#{scene.amend}px 0"
+          scene.element.style["z-index"] = 0
+
+        return canvas
+
+      ###*
+      * Gets specific option of layer
+      * @public
+      * @param {string} key
+      * @param {number} window width
+      * @returns {object} value
+      ###
+      getOption: (key, windowWidth)->
+        for point of @.responsive
+          if point <= windowWidth then targetPoint = point
+        return @.responsive[targetPoint][key]
+
+      ###*
+       * Creates a set of responsive options of the layer
+       * @public
+       * @returns {object} options
+      ###
+      getResponsiveOptions: ()->
+        responsive = {}
+        resolutions = []
+        aliases = []
+
+        for i, alias of @.aliases
+          resolutions.push(i)
+          aliases.push(alias)
+
+        for point, i in resolutions
+          responsive[point] = {}
+
+          while (j = i) >= -1
+            if !responsive[point]["on"] and (value = @.element.getAttribute("data#{aliases[j]}on"))?
+              responsive[point]["on"] = value isnt "false"
+
+            if !responsive[point]["on"]? and j is 0
+              responsive[point]["on"] = true
+
+            i--
+        return responsive
+
+      ###*
+       * Creates the layers of parallax
+       * @public
+       * @param {number} window width
+       * @returns {array} List of layers
+      ###
+      createLayers: (windowWidth, windowHeight)->
+        scene = @
+        elements = $(scene.element).find(".rd-parallax-layer").get() # TODO: Replace with native js
+        layers = []
+
+        for element, i in elements
+          layers.push(new Layer(element, scene.aliases, windowWidth, windowHeight, scene.offsetTop, scene.offsetHeight, scene.on))
+
+        return layers
+
+      ###*
+       * Update scene position
+       * @public
+      ###
+      move: (scrollY)->
+        scene = @
+        if scene.anchor?
+          pos = scene.positionTop
+        else
+          pos = scene.offsetTop - scrollY
+
+        # Set vendor for old safari and chrome
+        if isWebkit
+          scene.canvas.style["-webkit-transform"] = "translate3d(0,#{pos}px,0)"
+        scene.canvas.style["transform"] = "translate3d(0,#{pos}px,0)"
+
+      ###*
+       * Refresh scene dimensions
+       * @param {number} windowWidth - current window width
+       * @param {number} windowHeight - current window height
+       * @public
+      ###
+      refresh: (windowWidth, windowHeight)->
+        scene = @
+        mediaLayers = []
+
+        scene.on = scene.getOption("on", windowWidth)
+        scene.offsetTop = scene.getOffset(scene.element).top
+        scene.offsetLeft = scene.getOffset(scene.element).left
+        scene.width = scene.element.offsetWidth
+        scene.canvas.style["width"] = "#{scene.width}px"
+
+        # Calculate relative offset to parent with CSS Transform
+        if scene.anchor?
+          scene.positionTop = scene.element.offsetTop
+
+        # Calculate Agent offset
+        if scene.agent?
+          scene.agentOffset = scene.getOffset(scene.agent).top
+          scene.agentHeight = scene.agent.offsetHeight
+        else
+          scene.agentOffset = scene.agentHeight = null
+
+        # Update all scene layers except medias
+        for layer in scene.layers
+          if layer.type is "media"
+            mediaLayers.push(layer)
+          else
+            layer.refresh(windowWidth, windowHeight, scene.offsetTop, scene.offsetHeight, scene.on)
+
+        scene.offsetHeight = scene.canvas.offsetHeight - scene.amend*2
+        scene.element.style["height"] = "#{scene.offsetHeight}px"
+
+        # Update media layers when scene height was recalcucated
+        for layer in mediaLayers
+          layer.refresh(windowWidth, windowHeight, scene.offsetTop, scene.offsetHeight, scene.on)
+
+        return
+
+      ###*
+       * Update scene act
+       * @public
+      ###
+      update: (scrollY, windowWidth, windowHeight, documentHeight, inputFocus)->
+        scene = @
+
+        sceneOffset = scene.offsetTop
+        sceneHeight = scene.offsetHeight
+
+        if !isIE and (!isMobile)
+          scene.move(scrollY)
+
+        # Check if layers are in viewport
+#        if (scrollY + windowHeight >= sceneOffset and scrollY <= sceneOffset + sceneHeight)
+        for layer in scene.layers
+          layer.move(scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, scene.on, scene.agentOffset, inputFocus)
+          layer.fuse(sceneOffset, sceneHeight) if layer.fade and !isMobile
+
+      ###*
+       * Checks if element is transformed
+       * @public
+       * @returns {boolean}
+      ###
+      isTransformed: ()->
         el = @
         transforms = {
           'webkitTransform':'-webkit-transform'
@@ -74,340 +597,159 @@
         for t of transforms
           if transforms.hasOwnProperty(t)
             if el.style[t]?
-              hasMatrix = window.getComputedStyle(el).getPropertyValue(transforms[t])
+              transformed = window.getComputedStyle(el).getPropertyValue(transforms[t])
 
-        if (hasMatrix? and hasMatrix.length > 0 and hasMatrix isnt "none")
-          ctx.$anchor = $(@)
+        if (transformed? and transformed.length > 0 and transformed isnt "none")
+          return true
+        else
           return false
-      )
-      .end()
-      .wrapInner($('<div/>', {"class": "rd-parallax-inner"}))
-      .find(".rd-parallax-layer[data-type]")
-      .each ->
-        layer = $(@)
 
-        switch layer.attr("data-type").toLowerCase()
-          when "media"
-            # Build Image media
-            if url = @.getAttribute("data-url")
-              layer.css({
-                "background-image": ctx.url(url)
-              })
+      ###*
+       * Calc the element offset relative to document. Method is similar to $.offset()
+       * @public
+       * @param {element} element - HTML Element
+       * @returns {object} top and left offsets
+      ###
+      getOffset: (element)->
+        bound = element.getBoundingClientRect()
+        left = bound.left + (window.scrollX || window.pageYOffset)
+        top = bound.top + (window.scrollY || window.pageYOffset)
 
-              # Create Media Blur handler
-              if @.getAttribute("data-blur") == "true" or ctx.options.blur
-                $('<img/>', {src: url}).load(() ->
-                  # Save image original size
-                  layer.attr("data-media-width", this.width)
-                  layer.attr("data-media-height", this.height)
-
-                  # Create media listener on blur image if its to small
-                  ctx.$win.on("resize", $.proxy(ctx.blurMedia, layer[0], ctx)) if !isMobile
-
-                  # Make image initial blur if needed
-                  $.proxy(ctx.blurMedia, layer[0], ctx)()
-                )
-
-            ctx.$element.on("resize", $.proxy(ctx.resizeMedia, @, ctx))
-            ctx.$element.on("resize", $.proxy(ctx.moveLayer, @, ctx))
-
-            # Create media resize handlers
-            if !isMobile
-              ctx.$win.on("resize", $.proxy(ctx.resizeMedia, @, ctx))
-            else
-              ctx.$win.on("orientationchange", $.proxy(ctx.resizeMedia, @, ctx))
-
-        # Apply layer handlers
-        if !isMobile
-          ctx.$doc.on("scroll", $.proxy(ctx.moveLayer, @, ctx))
-          ctx.$win.on("resize", $.proxy(ctx.moveLayer, @, ctx))
-
-          # Create Layer fade handler
-          if @.getAttribute("data-fade") == "true"
-            # Fade layer on scroll
-            ctx.$doc.on("scroll", $.proxy(ctx.fadeLayer, @, ctx))
-
-            # Fade layer on window resize on desktop
-            ctx.$win.on("resize", $.proxy(ctx.fadeLayer, @, ctx))
-
-        # Create move handler for device fallback
-        else
-          ctx.$win.on("resize orientationchange", $.proxy(ctx.moveLayer, @, ctx))
-
-        return
-
-      ctx.$canvas = ctx.$element.find(".rd-parallax-inner")
-
-      if (ctx.$element.attr("data-fit-to-parent") is "true")
-        ctx.$win.on("resize", $.proxy(ctx.fitCanvas, ctx.$canvas, ctx))
-
-      # Create fixed Canvas to prevent lagging on desktop
-      if !isMobile
-        ctx.$win.on("resize", $.proxy(ctx.resizeWrap, ctx.$element[0], ctx))
-        ctx.$win.on("resize", $.proxy(ctx.resizeCanvas, ctx.$canvas[0], ctx))
-        ctx.$doc.on("scroll", $.proxy(ctx.moveCanvas, ctx.$canvas[0], ctx))
-        ctx.$win.on("resize", $.proxy(ctx.moveCanvas, ctx.$canvas[0], ctx))
-
-      # Trigger Initial Events
-      ctx.$win.trigger("resize")
-      ctx.$win.trigger("orientationchange")
-      ctx.$doc.trigger("scroll")
-
-      ctx.$win.load(()->
-        ctx.$win.trigger("resize")
-        ctx.$win.trigger("orientationchange")
-        ctx.$doc.trigger("scroll")
-      )
-
-      return
-
+        return {top: top, left: left}
 
     ###*
-     * Moves Layer
-     * @param {object} ctx
-     * @protected
+     * Default options for parallax.
+     * @public
     ###
-    moveLayer: (ctx) ->
-      scrt = ctx.$win.scrollTop()
-      offt = ctx.$element.offset().top
-      wh = ctx.$win.height()
-      ch = ctx.$element.height()
-      dh = ctx.$doc.height()
-      h = @.offsetHeight
-      v = Math.max(parseFloat(v), 0)
-      dir = if ctx.getAttribute(@, 'direction') is "inverse" then -1 else 1
-      v = dir * Math.min(parseFloat(ctx.getAttribute(@, 'speed')), 2.0)
-      agent = @.getAttribute("data-agent")
-
-      # If agent is set
-      if (agent = @.getAttribute("data-agent"))?
-        # Agent layer position correction
-        if (agent = $(agent)).length
-          dy = (offt + wh - (agent.offset().top + wh)) / (wh - ch)
-        else
-          dy = 0.5
-
-      # Else calc with document agent
-      else if @.getAttribute("data-type") isnt "media"
-        if offt < wh or offt > dh - wh
-          # First Screen layer position correction
-          if offt < wh
-            dy = offt / (wh - ch)
-
-          # Last Screen layer position correction
-          else
-            dy = (offt + wh - dh ) / (wh - ch)
-
-          # Set Layer position correction to zero if is NaN
-          if !isFinite(dy)
-            dy = 0
-        else
-          dy = 0.5
-      else
-        dy = 0.5
-
-
-
-
-      # Move layer on Desktop
-      if !isMobile
-        pos = -(offt - scrt) * v + (ch - h) / 2 + (wh - ch)*dy*v + parseInt(ctx.getAttribute(@, 'offset'))
-
-        # Check layers is in viewport
-        if (scrt + wh >= offt and scrt <= offt + ch) or @.getAttribute("data-unbound") is "true"
-          $(@).css(ctx.transform(pos, ctx))
-
-      # Send layer to scene center of devices
-      else
-        pos = (ch - h) / 2
-        $(@).css(ctx.transform(pos, ctx))
-
-
-
-    ###*
-     * Move Canvas
-     * @param {object} ctx
-     * @protected
-    ###
-    moveCanvas: (ctx, e)->
-      canvas = $(@)
-      scrt = ctx.$win.scrollTop()
-      offt = ctx.$element.offset().top
-
-      pos = (if ctx.$anchor then ctx.$element.position().top else offt - scrt)
-
-      canvas
-        .css({"top": pos})
-
-    ###*
-     * Fade Layer
-     * @param {object} ctx
-     * @protected
-    ###
-    fadeLayer: (ctx, e) ->
-      layer = $(@)
-      ch = ctx.$element.height()
-      coff = ctx.$element.offset().top + ch / 2
-      loff = layer.offset().top + layer.height() / 2
-      pos = ch / 6.0
-
-      if coff + pos > loff and coff - pos < loff
-        layer.css({"opacity": 1})
-      else
-        if coff - pos < loff
-          o = 1 + ((coff + pos - loff) / ch / 3.0 * 10)
-        else
-          o = 1 - ((coff - pos - loff) / ch / 3.0 * 10)
-        layer.css({"opacity": if o < 0 then 0 else if o > 1 then 1 else o.toFixed(2)})
-
-    ###*
-     * Blurs Layer
-     * @param {object} ctx
-     * @protected
-    ###
-    blurMedia: (ctx) ->
-      h = @.offsetHeight
-      w = @.offsetWidth
-      mh = parseFloat(@.getAttribute("data-media-height"))
-      mw = parseFloat(@.getAttribute("data-media-width"))
-
-      blur = Math.ceil(Math.max(h / mh, w / mw));
-
-      $(@).css(ctx.blur(blur))
-
-    ###*
-     * Resize Media Layer
-     * @param {object} ctx
-     * @protected
-    ###
-    resizeMedia: (ctx) ->
-      @.style.height = ctx.px(ctx.getMediaHeight(
-        ctx.$win.height(),
-        ctx.$element.height(),
-        ctx.getAttribute(@, 'speed'),
-        if ctx.getAttribute(@, 'direction') is "inverse" then -1 else 1
-      ))
-
-
-    ###*
-     * Resize Main parallax wrap
-     * @param {object} ctx
-     * @protected
-    ###
-    resizeWrap: (ctx) ->
-      @.style.height = ctx.px(ctx.$canvas.outerHeight())
-
-
-    ###*
-     * Resize Canvas
-     * @param {object} ctx
-     * @protected
-    ###
-    resizeCanvas: (ctx) ->
-      $canvas = $(@)
-      $canvas.css({
-        "position": if isIE && ctx.$anchor then "relative" else "fixed"
-        "left": (if isIE then "auto" else (if ctx.$anchor then ctx.$element.offset().left - ctx.$anchor.offset().left else ctx.$element.offset().left))
-        "width": ctx.$element.width()
-      })
-
-    fitCanvas: (ctx)->
-      setTimeout(()->
-        ctx.$canvas.css({"height": ctx.$element.parent().parent().height()})
-      )
-
-
-    ###*
-     * Calc media layer height.
-     * @param {number} wh
-     * @param {number} v
-     * @returns {number} media layer height
-     * @protected
-    ###
-    getMediaHeight: (wh, ch, v, dir) ->
-      v = Math.max(parseFloat(v), 0)
-      v = Math.min(parseFloat(v), 2.0)
-      dh = if dir is -1 then (ch + wh) * v else 0
-
-      (ch + dh + if v <= 1 then Math.abs(wh - ch) * v else wh * v) + 56
-
-
-    ###*
-     * Generates css background path.
-     * @param {string} url
-     * @returns {string} css url path
-     * @protected
-    ###
-    url: (url) ->
-      "url(" + url + ")"
-
-    ###*
-     * Converts Number to Pixels.
-     * @param {number} num
-     * @returns {string} pixels
-     * @protected
-    ###
-    px: (num) ->
-      num + "px"
-
-    ###*
-    * Creates transform property.
-    * @param {number} pos
-    * @param {object} ctx
-    * @returns {object} CSS transform
-    * @protected
-    ###
-    transform: (pos, ctx) ->
-      {
-        "-webkit-transform": "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + pos + ",0,1)"
-        "transform": "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + pos + ",0,1)"
+    Defaults:
+      selector: '.rd-parallax'
+      screenAliases: {
+        0: '-'
+        480: '-xs-'
+        768: '-sm-'
+        992: '-md-'
+        1200: '-lg-'
+        1920: '-xl-'
+        2560: '-xxl-'
       }
 
-    ###*
-     * Creates blur property
-     * @param {number} blur
-     * @returns {object} CSS blur
-     * @protected
-    ###
-    blur: (blur) ->
-      if blur > 3
-        {
-          '-webkit-filter': 'blur(' + blur + 'px)'
-          , 'filter': 'blur(' + blur + 'px)'
-        }
-      else
-        {
-          'filter': 'none'
-          , '-webkit-filter': 'none'
-        }
+    constructor: (options) ->
+      @.options = $.extend(true, {}, @.Defaults, options)
+      @.scenes = []
+      @.initialize()
+      @.scrollY = window.scrollY || window.pageYOffset
+      @.lastScrollY = -1
+      @.inputFocus = false
 
     ###*
-    * Gets specific option of plugin
-    * @protected
+     * Initializes the Parallax.
+     * @public
     ###
-    getAttribute: (element, key)->
-      if @.options.screenAliases?
-        aliases = Object.keys(@.options.screenAliases).reverse()
-        for i in [0..(aliases.length - 1)]
-          alias = if @.options.screenAliases[aliases[i]] isnt '' then "-#{@.options.screenAliases[aliases[i]]}" else @.options.screenAliases[aliases[i]]
-          attr = element.getAttribute("data#{alias}-#{key}")
-          if aliases[i] <= @.$win.width() and attr?
-            break;
-      if attr?
-        attr
-      else
-        @.options[key]
+    initialize: () ->
+      ctx = @
+      elements = document.querySelectorAll(ctx.options.selector)
+      windowWidth = window.innerWidth
+      windowHeight = window.innerHeight
 
+      for element, i in elements
+        ctx.scenes.push(new Scene(element, ctx.options.screenAliases, windowWidth, windowHeight))
+
+      $(window).on("resize", $.proxy(ctx.resize, ctx))
+
+      # Fix default scrolling in iOS Safari on input focus
+      if isSafariIOS
+        $('input').on("focusin focus", (e)->
+          e.preventDefault()
+          ctx.activeOffset = $(@).offset().top
+          window.scrollTo(window.scrollX || window.pageXOffset, ctx.activeOffset - this.offsetHeight - 100)
+        )
+
+      $(window).trigger("resize")
+      ctx.update()
+      return
+
+    ###*
+     * Resize all scenes
+     * @public
+    ###
+    resize: ()->
+      ctx = @
+
+      if (currentWindowWidth = window.innerWidth) isnt ctx.windowWidth or !isMobile
+        ctx.windowWidth = currentWindowWidth
+        ctx.windowHeight = window.innerHeight
+        ctx.documentHeight = document.body.offsetHeight
+
+        for scene in ctx.scenes
+          scene.refresh(ctx.windowWidth, ctx.windowHeight)
+
+        ctx.update(true)
+
+    ###*
+     * Update all parallax scenes
+     * @param {boolean} forceUpdate - force scenes update if scroll wasnt triggered
+     * @public
+    ###
+    update: (forceUpdate)->
+      ctx = @
+
+      if !forceUpdate
+        requestAnimationFrame(()->
+          ctx.update()
+          return
+        )
+
+      scrollY = window.scrollY || window.pageYOffset
+
+      # Fix parallax crash on input focus in Safari iOS
+      if isSafariIOS
+        if (activeElement = document.activeElement)?
+          if activeElement.tagName.match(/(input)|(select)|(textarea)/i)
+            ctx.activeElement = activeElement
+            ctx.inputFocus = true
+          else
+            ctx.activeElement = null
+            ctx.inputFocus = false
+            forceUpdate = true
+
+      # Fix Mobile Chrome status bar resizing the page
+      if isMobile and isChrome
+        deltaHeight = window.innerHeight - ctx.windowHeight
+        ctx.deltaHeight = deltaHeight
+        scrollY -= ctx.deltaHeight
+
+      # Update All Parallax scenes
+      if (scrollY isnt ctx.lastScrollY or forceUpdate) and !ctx.isActing
+        ctx.isActing = true
+
+        windowWidth = ctx.windowWidth
+        windowHeight = ctx.windowHeight
+        documentHeight = ctx.documentHeight
+
+        deltaScroll = scrollY - ctx.lastScrollY
+
+        # Fix iOS Safari input cursor position issue
+        if isSafariIOS
+          if ctx.activeElement?
+            ctx.activeElement.value = ctx.activeElement.value + " "
+            ctx.activeElement.value = ctx.activeElement.value.trim()
+
+
+        for scene in ctx.scenes
+          if ctx.inputFocus || forceUpdate || (scrollY + windowHeight >= (scene.agentOffset || scene.offsetTop) + deltaScroll  and scrollY <= (scene.agentOffset || scene.offsetTop) + (scene.agentHeight || scene.offsetHeight) + deltaScroll)
+            scene.update(scrollY, windowWidth, windowHeight, documentHeight, ctx.inputFocus)
+
+        ctx.lastScrollY = scrollY
+        ctx.isActing = false
 
   ###*
    * The jQuery Plugin for the RD Parallax
    * @public
   ###
-  $.fn.extend RDParallax: (options) ->
-    @each ->
-      $this = $(this)
-      if !$this.data('RDParallax')
-        $this.data 'RDParallax', new RDParallax(this, options)
+  $.RDParallax = (options) ->
+    $doc = $(document)
+    if !$doc.data('RDParallax')
+      $doc.data 'RDParallax', new RDParallax(options)
 
   window.RDParallax = RDParallax) window.jQuery, document, window
 

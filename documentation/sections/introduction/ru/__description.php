@@ -17,13 +17,24 @@
     </li>
     <li>
         Сам скрипт доступен в нашем публичном репозитории:
-        <a href='http://products.git.devoffice.com/coding-development/rd-parallax'>Git</a>
+        <a href='https://github.com/TemplatemonsterPlugins/rd-parallax'>Git</a>
     </li>
 </ul>
 
 <h3>Список изменений</h3>
 
 <ul class="marked-list">
+    <li>
+        <dl class="inline-term">
+            <dt>
+                19.01.2016
+            </dt>
+            <dd>
+                Version 3.5.0. Полная переработка движка. Оптимизация работы скрипта для MacOS, iOS, Android, IE. Решена проблема с подергиванием
+                слоев параллакса при отсутствии smoothing скролла.
+            </dd>
+        </dl>
+    </li>
     <li>
         <dl class="inline-term">
             <dt>
@@ -78,31 +89,24 @@
     <li class="center">
         <img src="img/ie.png" alt=""/>
 
-        <div><b>9+ *</b></div>
+        <div><b>10+</b></div>
     </li>
     <li class="center">
         <img src="img/chrome.png" alt=""/>
 
-        <div><b>40+</b></div>
+        <div><b>40+ (Windows, MacOS, Android)</b></div>
     </li>
     <li class="center">
         <img src="img/firefox.png" alt=""/>
 
-        <div><b>35+</b></div>
+        <div><b>35+ (Windows, MacOS)</b></div>
     </li>
     <li class="center">
         <img src="img/safari.png" alt=""/>
 
-        <div><b>6.1+</b></div>
+        <div><b>8.1+ (MacOS, iOS)</b></div>
     </li>
 </ul>
-
-<dl class="inline-term">
-    <dt>*</dt>
-    <dd>Не поддерживается эффект размытия, в случае большой разницы между размером секции параллакса и самого
-        изображения
-    </dd>
-</dl>
 
 <p>
     Тестирование в других браузерах не производилось. О всех найденых багах пишите автору используя контактную

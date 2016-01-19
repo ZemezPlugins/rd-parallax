@@ -12,51 +12,6 @@
     Общие настройки скрипта определяются в объекте options при инициализации.
 </p>
 
-<h5>blur</h5>
-<dl class="inline-term">
-    <dt>Тип</dt>
-    <dd>Boolean</dd>
-</dl>
-<dl class="inline-term">
-    <dt>Значение</dt>
-    <dd>true, false</dd>
-</dl>
-
-<p>
-    Если определен как true включает размытие изображения в случае, когда его размер слишком маленький
-    для качественного отображения в секции параллакса.
-</p>
-
-<h5>direction</h5>
-<dl class="inline-term">
-    <dt>Тип</dt>
-    <dd>String</dd>
-</dl>
-<dl class="inline-term">
-    <dt>Значение</dt>
-    <dd>inverse, normal</dd>
-</dl>
-
-<p>
-    Определяет направление движения параллакса. Если определен, как normal - параллакс будет двигаться параллельно
-    скроллу, если inverse - в противоположном направлении.
-</p>
-
-<h5>speed</h5>
-<dl class="inline-term">
-    <dt>Тип</dt>
-    <dd>Number</dd>
-</dl>
-<dl class="inline-term">
-    <dt>Значение</dt>
-    <dd>0 ~ 2</dd>
-</dl>
-
-<p>
-    Определяет скорость движения параллакса относительно движения скроллбара. Для большего понимания, если
-    значение скорости равно 1 - получаем эмуляцию css свойства background-attachment: fixed
-</p>
-
 <h5>screenAliases</h5>
 <dl class="inline-term">
     <dt>Тип</dt>
@@ -64,13 +19,35 @@
 </dl>
 <dl class="inline-term">
     <dt>Значение по-умолчанию</dt>
-    <dd>{ 0: '', 480: 'xs', 768: 'sm', 992: 'md', 1200: 'lg'}</dd>
+    <dd>{ 0: '-', 480: '-xs-', 768: '-sm-', 992: '-md-', 1200: '-lg-', 1600: '-xl-', 1920: '-xxl-'}</dd>
 </dl>
 
 <p>
-    Объект, содержащий алиасы имен для создания адаптивных настроек слоев паралакса
+    Объект, содержащий алиасы имен для создания адаптивных настроек слоев паралакса. Например, data-md-speed и т.д.
 </p>
 
+<h3>
+    Настройки сцены
+</h3>
+
+<p>
+    Скрипт также поддерживает дополнительную настройку каждой сцены прямо в HTML с помощью data-аттрибутов
+</p>
+
+<h5>data-on, data-xs-on, data-sm-on, data-md-on, data-lg-on, data-xl-on, data-xxl-on</h5>
+<dl class="inline-term">
+    <dt>Тип</dt>
+    <dd>boolean</dd>
+</dl>
+<dl class="inline-term">
+    <dt>Значение</dt>
+    <dd>true, false</dd>
+</dl>
+
+<p>
+    Определяет тип слоя параллакса. Если определен как media, будет производиться расчет размера слоя относительно высоты секции
+    параллакса, если html - размер определяется контентом.
+</p>
 
 <h3>
     Настройки слоев
@@ -88,12 +65,12 @@
 </dl>
 <dl class="inline-term">
     <dt>Значение</dt>
-    <dd>media, html</dd>
+    <dd>media, html, custom</dd>
 </dl>
 
 <p>
     Определяет тип слоя параллакса. Если определен как media, будет производиться расчет размера слоя относительно высоты секции
-    параллакса, если html - размер определяется контентом.
+    параллакса, если html - размер определяется контентом, custom - определяется вашими CSS стилями.
 </p>
 
 <h5>data-url</h5>
@@ -151,7 +128,7 @@
     для качественного отображения в секции параллакса.
 </p>
 
-<h5>data-direction, data-xs-direction, data-sm-direction, data-md-direction, data-lg-direction</h5>
+<h5>data-direction</h5>
 <dl class="inline-term">
     <dt>Тип</dt>
     <dd>String</dd>
@@ -180,33 +157,6 @@
     Указывает дополнительный офсет для слоя параллакса на соответствующем разрешении.
 </p>
 
-<h5>data-fit-container</h5>
-<dl class="inline-term">
-    <dt>Тип</dt>
-    <dd>Boolean</dd>
-</dl>
-<dl class="inline-term">
-    <dt>Значение</dt>
-    <dd>false, true</dd>
-</dl>
-
-<p>
-    Если true - преравнивает высоту параллакса к высоте родительского контейнера.
-</p>
-
-<h5>data-unbound</h5>
-<dl class="inline-term">
-    <dt>Тип</dt>
-    <dd>Boolean</dd>
-</dl>
-<dl class="inline-term">
-    <dt>Значение</dt>
-    <dd>false, true</dd>
-</dl>
-
-<p>
-    Если true - разрешает движение слоя вне границ сцены параллакса.
-</p>
 
 <h5>data-agent</h5>
 <dl class="inline-term">
