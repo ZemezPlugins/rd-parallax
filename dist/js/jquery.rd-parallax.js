@@ -3,7 +3,7 @@
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
  * @version      3.5.0 
- */  
+ */   
  
 (function() {
   (function($, document, window) { 
