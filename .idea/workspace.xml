@@ -2,11 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="977ef431-1b17-4487-bc80-c8635898df9c" name="Default" comment="UPD: demo">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/core.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/html5shiv.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/jquery.swiper.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/jquery.ui.totop.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/jquery.vide.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/pointer-events.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/script.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/smoothscroll.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/js/wow.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/css/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/device.min.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/html5shiv.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery-migrate-1.2.1.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery.easing.1.3.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery.rd-navbar.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/jquery.ui.totop.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documentation/js/script.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sources/css/rd-parallax.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/jquery.rd-parallax.js" afterPath="$PROJECT_DIR$/dist/js/jquery.rd-parallax.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/jquery.rd-parallax.min.js" afterPath="$PROJECT_DIR$/dist/js/jquery.rd-parallax.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/documentation/sections/settings/ru/__description.php" afterPath="$PROJECT_DIR$/documentation/sections/settings/ru/__description.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sources/coffee/jquery.rd-parallax.coffee" afterPath="$PROJECT_DIR$/sources/coffee/jquery.rd-parallax.coffee" />
     </list>
     <ignored path="rd-parallax.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,7 +70,7 @@
       <file leaf-file-name="rd-parallax.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sources/sass/rd-parallax.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.75">
+            <state vertical-scroll-proportion="0.0">
               <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
               <folding />
             </state>
@@ -65,6 +82,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="41" column="7" selection-start-line="41" selection-start-column="7" selection-end-line="41" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="jquery.rd-parallax.min.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dist/js/jquery.rd-parallax.min.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.18728717">
+              <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -85,21 +112,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="1" column="54" selection-start-line="1" selection-start-column="54" selection-end-line="1" selection-end-column="54" />
-              <folding>
-                <marker date="1451916019621" expanded="false" signature="692:834" placeholder="..." />
-                <marker date="1451916019621" expanded="true" signature="835:1158" placeholder="..." />
-                <marker date="1451916019621" expanded="true" signature="910:1147" placeholder="..." />
-                <marker date="1451916019621" expanded="true" signature="1010:1134" placeholder="..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__description.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="__description.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/documentation/sections/settings/ru/__description.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8476298">
-              <caret line="215" column="25" selection-start-line="215" selection-start-column="25" selection-end-line="215" selection-end-column="25" />
+            <state vertical-scroll-proportion="-18.833334">
+              <caret line="152" column="14" selection-start-line="152" selection-start-column="14" selection-end-line="152" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -171,8 +193,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -363,6 +383,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -452,9 +474,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.170706" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.170706" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -544,6 +566,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/sources/coffee/jquery.rd-parallax.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="7" selection-start-line="41" selection-start-column="7" selection-end-line="41" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/demo/js/script.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -556,12 +586,58 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="54" selection-start-line="1" selection-start-column="54" selection-end-line="1" selection-end-column="54" />
-          <folding>
-            <marker date="1451916019621" expanded="false" signature="692:834" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="835:1158" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="910:1147" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="1010:1134" placeholder="..." />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/documentation/sections/settings/ru/__description.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor vertical-scroll-proportion="0.0">
+            <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/documentation/sections/introduction/ru/__description.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources/sass/rd-parallax.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/js/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="54" selection-start-line="1" selection-start-column="54" selection-end-line="1" selection-end-column="54" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -612,12 +688,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="54" selection-start-line="1" selection-start-column="54" selection-end-line="1" selection-end-column="54" />
-          <folding>
-            <marker date="1451916019621" expanded="false" signature="692:834" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="835:1158" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="910:1147" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="1010:1134" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -668,12 +739,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="54" selection-start-line="1" selection-start-column="54" selection-end-line="1" selection-end-column="54" />
-          <folding>
-            <marker date="1451916019621" expanded="false" signature="692:834" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="835:1158" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="910:1147" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="1010:1134" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -724,12 +790,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="66" column="59" selection-start-line="66" selection-start-column="59" selection-end-line="66" selection-end-column="59" />
-          <folding>
-            <marker date="1451916019621" expanded="false" signature="692:834" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="835:1158" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="910:1147" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="1010:1134" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -849,7 +910,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sources/sass/rd-parallax.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.75">
+        <state vertical-scroll-proportion="0.0">
           <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
           <folding />
         </state>
@@ -866,12 +927,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="54" selection-start-line="1" selection-start-column="54" selection-end-line="1" selection-end-column="54" />
-          <folding>
-            <marker date="1451916019621" expanded="false" signature="692:834" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="835:1158" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="910:1147" placeholder="..." />
-            <marker date="1451916019621" expanded="true" signature="1010:1134" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -885,8 +941,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/documentation/sections/settings/ru/__description.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8476298">
-          <caret line="215" column="25" selection-start-line="215" selection-start-column="25" selection-end-line="215" selection-end-column="25" />
+        <state vertical-scroll-proportion="-18.833334">
+          <caret line="152" column="14" selection-start-line="152" selection-start-column="14" selection-end-line="152" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/jquery.rd-parallax.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18728717">
+          <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
           <folding />
         </state>
       </provider>
