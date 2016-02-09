@@ -271,7 +271,7 @@ function isIE() {
 (function ($) {
     var o = $('.rd-parallax');
     if (o.length) {
-        include('../dist/js/jquery.rd-parallax.min.js');
+        include('../dist/js/jquery.rd-parallax.js');
 
         $(document).ready(function () {
             $.RDParallax();

@@ -2,11 +2,11 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.5.0 
- */   
- 
+ * @version      3.5.1
+ */
+
 (function() {
-  (function($, document, window) { 
+  (function($, document, window) {
 
     /**
      * Compatibility flags
@@ -303,9 +303,15 @@
               }
             } else {
               dy = 0.5;
+              if (isIE || isMobile) {
+                dy = -0.5 * (1 + v);
+              }
             }
           } else {
             dy = 0.5;
+            if (isIE || isMobile) {
+              dy = -0.5 * (1 + v);
+            }
           }
           if (isChromeIOS) {
             pos = (sceneHeight - h) / 2 + (windowHeight - sceneHeight) * dy * v + layer.offset;

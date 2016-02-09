@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.5.0
+ * @version      3.5.1
 ###
 (($, document, window) ->
   ###*
@@ -280,8 +280,12 @@
               dy = 0
           else
             dy = 0.5
+            if isIE or isMobile
+              dy = - 0.5 * (1 + v)
         else
           dy = 0.5
+          if isIE or isMobile
+            dy = - 0.5 * (1 + v)
 
         # Disable Layer scrolling in iOS Chrome
         if isChromeIOS
@@ -289,13 +293,14 @@
         else
           pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*v + layer.offset
 
+
         if isIE or isMobile
           if agentOffset?
             layer.element.style["top"] = "#{sceneOffset - agentOffset}px"
 
         if isSafariIOS
           if inputFocus
-              pos += sceneOffset
+            pos += sceneOffset
 
         # Set vendor for old safari and chrome
         if isWebkit
