@@ -27,6 +27,16 @@
     <li>
         <dl class="inline-term">
             <dt>
+                9.02.2016
+            </dt>
+            <dd>
+                Version 3.5.1. Исправлен просчет позиции для IE и Safari IOS.
+            </dd>
+        </dl>
+    </li>
+    <li>
+        <dl class="inline-term">
+            <dt>
                 19.01.2016
             </dt>
             <dd>
