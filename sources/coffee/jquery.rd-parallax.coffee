@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.5.1
+ * @version      3.5.2
 ###
 (($, document, window) ->
   ###*
@@ -265,7 +265,7 @@
         if agentOffset?
           dy = (sceneOffset + windowHeight - (agentOffset + windowHeight)) / (windowHeight - sceneHeight)
         # Else calc with document agent
-        else if @.type isnt "media"
+        else if layer.type isnt "media"
           if sceneOffset < windowHeight or sceneOffset > documentHeight - windowHeight
             # First Screen layer position correction
             if sceneOffset < windowHeight
@@ -280,19 +280,16 @@
               dy = 0
           else
             dy = 0.5
-            if isIE or isMobile
-              dy = - 0.5 * (1 + v)
         else
           dy = 0.5
-          if isIE or isMobile
-            dy = - 0.5 * (1 + v)
 
         # Disable Layer scrolling in iOS Chrome
         if isChromeIOS
           pos = (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*v + layer.offset
+        else if isIE or isMobile
+          pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*(v + 1) + layer.offset
         else
           pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*v + layer.offset
-
 
         if isIE or isMobile
           if agentOffset?

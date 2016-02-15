@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.5.1
+ * @version      3.5.2
  */
 
 (function() {
@@ -291,7 +291,7 @@
           h = layer.offsetHeight;
           if (agentOffset != null) {
             dy = (sceneOffset + windowHeight - (agentOffset + windowHeight)) / (windowHeight - sceneHeight);
-          } else if (this.type !== "media") {
+          } else if (layer.type !== "media") {
             if (sceneOffset < windowHeight || sceneOffset > documentHeight - windowHeight) {
               if (sceneOffset < windowHeight) {
                 dy = sceneOffset / (windowHeight - sceneHeight);
@@ -303,18 +303,14 @@
               }
             } else {
               dy = 0.5;
-              if (isIE || isMobile) {
-                dy = -0.5 * (1 + v);
-              }
             }
           } else {
             dy = 0.5;
-            if (isIE || isMobile) {
-              dy = -0.5 * (1 + v);
-            }
           }
           if (isChromeIOS) {
             pos = (sceneHeight - h) / 2 + (windowHeight - sceneHeight) * dy * v + layer.offset;
+          } else if (isIE || isMobile) {
+            pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight) * dy * (v + 1) + layer.offset;
           } else {
             pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight) * dy * v + layer.offset;
           }

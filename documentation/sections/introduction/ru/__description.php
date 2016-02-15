@@ -27,6 +27,16 @@
     <li>
         <dl class="inline-term">
             <dt>
+                15.02.2016
+            </dt>
+            <dd>
+                Version 3.5.2. Исправлен просчет позиции для IE и Safari IOS, когда параллакс находится в начале или конце страницы.
+            </dd>
+        </dl>
+    </li>
+    <li>
+        <dl class="inline-term">
+            <dt>
                 9.02.2016
             </dt>
             <dd>
