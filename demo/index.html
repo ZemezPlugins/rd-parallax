@@ -38,20 +38,22 @@
                               CONTENT
     =========================================================-->
     <main class="page-content">
-        <!--&lt;!&ndash; Swiper &ndash;&gt;-->
-        <section class="swiper-container swiper-slider" data-loop="false" data-autoplay="false" data-height="100vh"
-                 data-min-height="350px">
-            <div class="swiper-wrapper">
-                <!-- RD Parallax -->
-                <div class="swiper-slide rd-parallax-wrap">
-                    <div class="rd-parallax" data-fit-to-parent="true">
-                        <div class="rd-parallax-layer" data-speed="1" data-type="media"
-                             data-url="images/page-1_img01.jpg"></div>
-                        <div class="rd-parallax-layer" data-speed="0.7" data-type="html">
-                            <div class="container text-center text-md-right">
-                                <div class="row row-xs-middle" style="height: 100vh;">
-                                    <div class="col-xs-12">
-                                        <h1>
+        <!-- Swiper -->
+
+        <section class="rd-parallax rd-parallax-swiper">
+            <div class="rd-parallax-layer" data-speed="0" data-sm-speed="1" data-type="html">
+
+                <section class="swiper-container swiper-slider" data-loop="false" data-autoplay="false"
+                         data-height="100vh"
+                         data-min-height="350px" data-parallax="true">
+                    <div class="swiper-wrapper">
+                        <!-- RD Parallax -->
+                        <div class="swiper-slide" data-slide-bg="images/page-1_img01.jpg">
+                            <div class="swiper-caption swiper-parallax" data-speed="0.5" data-fade="true">
+                                <div class="container text-center text-md-right">
+                                    <div class="row row-xs-middle" style="height: 100vh;">
+                                        <div class="col-xs-12">
+                                            <h1>
                                             <span class="heading-4" data-caption-animate="fadeInUp">
                                                 This is a superior responsive
                                             </span>
@@ -61,23 +63,20 @@
                                                   data-caption-delay="800">
                                                 of the highest quality
                                             </span>
-                                        </h1>
+                                            </h1>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!--END RD Parallax-->
-                <div class="swiper-slide rd-parallax-wrap">
-                    <div class="rd-parallax" data-fit-to-parent="true">
-                        <div class="rd-parallax-layer vide" data-speed="0.6" data-type="media"
-                             data-vide-bg="video/video-bg"></div>
-                        <div class="rd-parallax-layer" data-speed="0.7" data-type="html" data-fade="true">
-                            <div class="container text-center">
-                                <div class="row row-xs-middle" style="height: 100vh;">
-                                    <div class="col-xs-12">
-                                        <h1>
+                        <!--END RD Parallax-->
+                        <div class="swiper-slide">
+                                <div class="vide" data-vide-bg="video/video-bg">
+                                    <div class="swiper-caption swiper-parallax" data-speed="0.5" data-fade="true">
+                                        <div class="container text-center">
+                                            <div class="row row-xs-middle" style="height: 100vh;">
+                                                <div class="col-xs-12">
+                                                    <h1>
                                     <span class="heading-1" data-caption-animate="fadeInUp"
                                           data-caption-animate="fadeInUp">
                                     Looking excellent on any device
@@ -85,19 +84,24 @@
                                     <span class="heading-4" data-caption-animate="fadeInUp" data-caption-delay="400">
                                     Inspected on laptops, desktops, phones and tablets.
                                     </span>
-                                        </h1>
+                                                    </h1>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Swiper Pagination -->
-            <div class="swiper-pagination"></div>
+                    <!-- Swiper Pagination -->
+                    <div class="swiper-pagination swiper-parallax" data-speed="0"></div>
+                </section>
+            </div>
         </section>
         <!-- END Swiper -->
+
+        <!--<div style="height: 1000px"></div>-->
 
         <!-- About Us -->
         <section class="well-sm text-center">
@@ -117,7 +121,8 @@
         <section class="rd-parallax">
             <div class="rd-parallax-layer" data-speed="0" data-sm-speed="0.1" data-type="media"
                  data-url="images/page-1_img04.jpg"></div>
-            <div class="rd-parallax-layer well-lg text-center" data-speed="0" data-sm-speed="0.2" data-type="html" style="position: relative;">
+            <div class="rd-parallax-layer well-lg text-center" data-speed="0" data-sm-speed="0.2" data-type="html"
+                 style="position: relative;">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-3">

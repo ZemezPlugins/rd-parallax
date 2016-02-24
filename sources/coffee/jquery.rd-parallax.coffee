@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.5.2
+ * @version      3.6.0
 ###
 (($, document, window) ->
   ###*
@@ -79,9 +79,9 @@
         @.responsive = @.getResponsiveOptions()
 
         # Use CSS Absolute for layer position if not IE
-        if (!isIE and !isMobile) or isChromeIOS
+        if (!isIE and !isMobile) or (isChrome and isMobile)
           @.element.style["position"] = "absolute"
-        # Use CSS Fixed && CSS Clip hack if IE
+          # Use CSS Fixed && CSS Clip hack if IE
         else
           @.element.style["position"] = "fixed"
 
@@ -107,35 +107,34 @@
         layer.speed = layer.getOption("speed", windowWidth) || 0
         layer.offset = layer.getOption("offset", windowWidth) || 0
 
-        if (isIE or isMobile) and !isChromeIOS
+        if isMobile and !(isChrome and isMobile)
           if sceneOn
             layer.element.style["position"] = "fixed"
           else
             layer.element.style["position"] = "absolute"
 
+        if isIE and layer.type is "html"
+          layer.element.style["position"] = "absolute"
+
         switch layer.type
           when "media"
-            layer.offsetHeight = layer.getMediaHeight(windowHeight, sceneHeight, layer.speed, layer.direction)
-            layer.element.style["height"] = "#{layer.offsetHeight}px"
+            if not isIE
+              layer.offsetHeight = layer.getMediaHeight(windowHeight, sceneHeight, layer.speed, layer.direction)
+              layer.element.style["height"] = "#{layer.offsetHeight}px"
           when "html"
             layer.element.style["width"] = "#{@.holder.offsetWidth}px"
             layer.offsetHeight = layer.element.offsetHeight
             layer.holder.style["height"] = "#{layer.offsetHeight}px"
 
             # Bound layer to holder by css absolute if not IE
-            if (!isIE and !isMobile) or isChromeIOS
-              layer.element.style["left"] = 0
-              layer.element.style["top"] = 0
-            # Bound layer to holder by css fixed for IE
+            if (!isIE and !isMobile) or (isChrome and isMobile)
             else
-              if sceneOn
+              if isIE
+                layer.element.style["position"] = "static"
+              else if sceneOn
                 layer.element.style["left"] = "#{layer.getOffset(layer.holder).left}px"
                 layer.element.style["top"] = "#{layer.getOffset(layer.holder).top - sceneOffset}px"
-                layer.holder.style["position"] = "static"
-              else
-                layer.element.style["left"] = 0
-                layer.element.style["top"] = 0
-                layer.holder.style["position"] = "relative"
+              layer.holder.style["position"] = "static"
           when "custom"
             layer.offsetHeight = layer.element.offsetHeight
 
@@ -246,6 +245,11 @@
       move: (scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, sceneOn, agentOffset, inputFocus)->
         layer = @
 
+        # Disable moving in IE for media layers
+        return if isIE and layer.type is "media"
+        # Disable moving in Chrome on Mobile Devices
+        return if isChrome and isMobile
+
         if !sceneOn
           if isWebkit
             layer.element.style["-webkit-transform"] = "translate3d(0,0,0)"
@@ -253,7 +257,7 @@
           return
 
         # Calculate speed by absolute position if not IE
-        if (!isIE and !isMobile) or (layer.type is "html" and inputFocus) or isChromeIOS
+        if (!isMobile) or (layer.type is "html" and inputFocus) or isChromeIOS
           v = layer.speed * layer.direction
         # Calculate speed by fixed position for IE
         else
@@ -283,15 +287,15 @@
         else
           dy = 0.5
 
-        # Disable Layer scrolling in iOS Chrome
-        if isChromeIOS
+        # Disable Layer scrolling in iOS Chrome and IE
+        if isChromeIOS or isIE
           pos = (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*v + layer.offset
-        else if isIE or isMobile
+        else if isMobile
           pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*(v + 1) + layer.offset
         else
           pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight)*dy*v + layer.offset
 
-        if isIE or isMobile
+        if isMobile
           if agentOffset?
             layer.element.style["top"] = "#{sceneOffset - agentOffset}px"
 
@@ -579,7 +583,7 @@
 #        if (scrollY + windowHeight >= sceneOffset and scrollY <= sceneOffset + sceneHeight)
         for layer in scene.layers
           layer.move(scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, scene.on, scene.agentOffset, inputFocus)
-          layer.fuse(sceneOffset, sceneHeight) if layer.fade and !isMobile
+          layer.fuse(sceneOffset, sceneHeight) if layer.fade and !isMobile and !isIE
 
       ###*
        * Checks if element is transformed
@@ -676,7 +680,6 @@
     ###
     resize: ()->
       ctx = @
-
       if (currentWindowWidth = window.innerWidth) isnt ctx.windowWidth or !isMobile
         ctx.windowWidth = currentWindowWidth
         ctx.windowHeight = window.innerHeight

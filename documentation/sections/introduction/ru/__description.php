@@ -27,6 +27,17 @@
     <li>
         <dl class="inline-term">
             <dt>
+                24.02.2016
+            </dt>
+            <dd>
+                Version 3.6.0. Отключен параллакс в хроме на мобильных устройствах. Отключен параллакс в IE для HTML слоя,
+                а для слоя "media" включен режим эмулирующий свойство background-attachment: fixed.
+            </dd>
+        </dl>
+    </li>
+    <li>
+        <dl class="inline-term">
+            <dt>
                 15.02.2016
             </dt>
             <dd>

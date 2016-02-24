@@ -5,7 +5,7 @@
 *
 * @author       Evgeniy Gusarov
 * @link         https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
-* @version      3.5.2
+* @version      3.6.0
 */
 .rd-parallax-inner {
   position: relative;
@@ -26,3 +26,5 @@
   -webkit-background-size: cover;
   background-size: cover;
   background-position: center center; }
+.rd-parallax-swiper {
+  z-index: 1 !important; }

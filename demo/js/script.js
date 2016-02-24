@@ -1,3 +1,6 @@
+var isIEBrows =navigator.appVersion.indexOf("MSIE") != -1 || navigator.appVersion.indexOf('Trident/') > 0;
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 /**
  * @function      Include
  * @description   Includes an external scripts to the page
@@ -178,6 +181,43 @@ function isIE() {
                 });
         }
 
+        function makeParallax(el, speed, wrapper, prevScroll) {
+            var scrollY = window.scrollY || window.pageYOffset;
+
+            if (prevScroll != scrollY) {
+                prevScroll = scrollY;
+                el.addClass('no-transition');
+                el[0].style['transform'] = 'translate3d(0,' + -scrollY * (1 - speed) + 'px,0)';
+                el.height();
+                el.removeClass('no-transition');
+
+
+                if (el.attr('data-fade') === 'true') {
+                    var bound = el[0].getBoundingClientRect(),
+                        offsetTop = bound.top * 2 + scrollY,
+                        sceneHeight = wrapper.outerHeight(),
+                        sceneDevider = wrapper.offset().top + sceneHeight / 2.0,
+                        layerDevider = offsetTop + el.outerHeight() / 2.0,
+                        pos = sceneHeight / 6.0,
+                        opacity;
+                    if (sceneDevider + pos > layerDevider && sceneDevider - pos < layerDevider) {
+                        el[0].style["opacity"] = 1;
+                    } else {
+                        if (sceneDevider - pos < layerDevider) {
+                            opacity = 1 + ((sceneDevider + pos - layerDevider) / sceneHeight / 3.0 * 5);
+                        } else {
+                            opacity = 1 - ((sceneDevider - pos - layerDevider) / sceneHeight / 3.0 * 5);
+                        }
+                        el[0].style["opacity"] = opacity < 0 ? 0 : opacity > 1 ? 1 : opacity.toFixed(2);
+                    }
+                }
+            }
+
+            requestAnimationFrame(function () {
+                makeParallax(el, speed, wrapper, prevScroll);
+            });
+        }
+
         $(document).ready(function () {
             o.each(function () {
                 var s = $(this);
@@ -186,11 +226,14 @@ function isIE() {
                     next = s.find(".swiper-button-next"),
                     prev = s.find(".swiper-button-prev"),
                     bar = s.find(".swiper-scrollbar"),
-                    h = getSwiperHeight(o, "height"), mh = getSwiperHeight(o, "min-height");
+                    h = getSwiperHeight(o, "height"), mh = getSwiperHeight(o, "min-height"),
+                    parallax = s.parents('.rd-parallax').length;
+
                 s.find(".swiper-slide")
                     .each(function () {
                         var $this = $(this),
                             url;
+
                         if (url = $this.attr("data-slide-bg")) {
                             $this.css({
                                 "background-image": "url(" + url + ")",
@@ -230,6 +273,21 @@ function isIE() {
                         onInit: function (swiper) {
                             toggleSwiperInnerVideos(swiper);
                             toggleSwiperCaptionAnimation(swiper);
+
+                            s.find(".swiper-parallax")
+                                .each(function () {
+                                    var $this = $(this),
+                                        speed;
+
+                                    if (parallax && !isIEBrows && !isMobile) {
+                                        if (speed = $this.attr("data-speed")) {
+                                            makeParallax($this, speed, s, false);
+                                        }
+                                    }
+                                });
+                            $(window).on('resize', function () {
+                                swiper.update(true);
+                            })
                         }
                     });
 
@@ -246,6 +304,7 @@ function isIE() {
         });
     }
 })(jQuery);
+
 
 /**
  * @module       Vide
@@ -271,7 +330,7 @@ function isIE() {
 (function ($) {
     var o = $('.rd-parallax');
     if (o.length) {
-        include('../dist/js/jquery.rd-parallax.js');
+        include('../dist/js/jquery.rd-parallax.min.js');
 
         $(document).ready(function () {
             $.RDParallax();

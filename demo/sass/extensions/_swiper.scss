@@ -455,13 +455,13 @@ button.swiper-pagination-bullet {
 }
  
 .swiper-slide{
-  &:not(.vide):not(.rd-parallax-wrap):before,
-  .parallax_cnt:before, .vide__body:before{
-    content: '';
-    display: inline-block;
-    height: 50%;
-    margin-left: -4px;
-  }
+//  &:not(.vide):not(.rd-parallax-wrap):before,
+//  .parallax_cnt:before, .vide__body:before{
+//    content: '';
+//    display: inline-block;
+//    height: 50%;
+//    margin-left: -4px;
+//  }
 
   &-caption{
     display: inline-block;
@@ -470,5 +470,9 @@ button.swiper-pagination-bullet {
     vertical-align: middle;
     white-space: normal;
   }
+}
+
+.swiper-container .no-transition{
+  transition: 0s;
 }
 

@@ -36,7 +36,7 @@
       <option name="outputFromStdout" value="false" />
       <option name="passParentEnvs" value="true" />
       <option name="program" value="C:/Ruby22/bin/scss.bat" />
-      <option name="scopeName" value="Demo" />
+      <option name="scopeName" value="demo scss" />
       <option name="trackOnlyRoot" value="true" />
       <option name="workingDir" value="$FileDir$" />
       <envs />
@@ -82,7 +82,7 @@
       <option name="outputFromStdout" value="false" />
       <option name="passParentEnvs" value="true" />
       <option name="program" value="$PROJECT_DIR$/vendor/compiler.jar" />
-      <option name="scopeName" value="Dist" />
+      <option name="scopeName" value="Unnamed" />
       <option name="trackOnlyRoot" value="true" />
       <option name="workingDir" value="$FileDir$" />
       <envs />

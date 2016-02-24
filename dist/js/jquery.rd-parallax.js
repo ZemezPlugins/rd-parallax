@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.5.2
+ * @version      3.6.0
  */
 
 (function() {
@@ -88,7 +88,7 @@
             this.url = element.getAttribute("data-url");
           }
           this.responsive = this.getResponsiveOptions();
-          if ((!isIE && !isMobile) || isChromeIOS) {
+          if ((!isIE && !isMobile) || (isChrome && isMobile)) {
             this.element.style["position"] = "absolute";
           } else {
             this.element.style["position"] = "fixed";
@@ -120,34 +120,37 @@
           layer = this;
           layer.speed = layer.getOption("speed", windowWidth) || 0;
           layer.offset = layer.getOption("offset", windowWidth) || 0;
-          if ((isIE || isMobile) && !isChromeIOS) {
+          if (isMobile && !(isChrome && isMobile)) {
             if (sceneOn) {
               layer.element.style["position"] = "fixed";
             } else {
               layer.element.style["position"] = "absolute";
             }
           }
+          if (isIE && layer.type === "html") {
+            layer.element.style["position"] = "absolute";
+          }
           switch (layer.type) {
             case "media":
-              layer.offsetHeight = layer.getMediaHeight(windowHeight, sceneHeight, layer.speed, layer.direction);
-              return layer.element.style["height"] = layer.offsetHeight + "px";
+              if (!isIE) {
+                layer.offsetHeight = layer.getMediaHeight(windowHeight, sceneHeight, layer.speed, layer.direction);
+                return layer.element.style["height"] = layer.offsetHeight + "px";
+              }
+              break;
             case "html":
               layer.element.style["width"] = this.holder.offsetWidth + "px";
               layer.offsetHeight = layer.element.offsetHeight;
               layer.holder.style["height"] = layer.offsetHeight + "px";
-              if ((!isIE && !isMobile) || isChromeIOS) {
-                layer.element.style["left"] = 0;
-                return layer.element.style["top"] = 0;
+              if ((!isIE && !isMobile) || (isChrome && isMobile)) {
+
               } else {
-                if (sceneOn) {
+                if (isIE) {
+                  layer.element.style["position"] = "static";
+                } else if (sceneOn) {
                   layer.element.style["left"] = (layer.getOffset(layer.holder).left) + "px";
                   layer.element.style["top"] = (layer.getOffset(layer.holder).top - sceneOffset) + "px";
-                  return layer.holder.style["position"] = "static";
-                } else {
-                  layer.element.style["left"] = 0;
-                  layer.element.style["top"] = 0;
-                  return layer.holder.style["position"] = "relative";
                 }
+                return layer.holder.style["position"] = "static";
               }
               break;
             case "custom":
@@ -276,6 +279,12 @@
         Layer.prototype.move = function(scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, sceneOn, agentOffset, inputFocus) {
           var dy, h, layer, pos, v;
           layer = this;
+          if (isIE && layer.type === "media") {
+            return;
+          }
+          if (isChrome && isMobile) {
+            return;
+          }
           if (!sceneOn) {
             if (isWebkit) {
               layer.element.style["-webkit-transform"] = "translate3d(0,0,0)";
@@ -283,7 +292,7 @@
             layer.element.style["transform"] = "translate3d(0,0,0)";
             return;
           }
-          if ((!isIE && !isMobile) || (layer.type === "html" && inputFocus) || isChromeIOS) {
+          if ((!isMobile) || (layer.type === "html" && inputFocus) || isChromeIOS) {
             v = layer.speed * layer.direction;
           } else {
             v = layer.speed * layer.direction - 1;
@@ -307,14 +316,14 @@
           } else {
             dy = 0.5;
           }
-          if (isChromeIOS) {
+          if (isChromeIOS || isIE) {
             pos = (sceneHeight - h) / 2 + (windowHeight - sceneHeight) * dy * v + layer.offset;
-          } else if (isIE || isMobile) {
+          } else if (isMobile) {
             pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight) * dy * (v + 1) + layer.offset;
           } else {
             pos = -(sceneOffset - scrollY) * v + (sceneHeight - h) / 2 + (windowHeight - sceneHeight) * dy * v + layer.offset;
           }
-          if (isIE || isMobile) {
+          if (isMobile) {
             if (agentOffset != null) {
               layer.element.style["top"] = (sceneOffset - agentOffset) + "px";
             }
@@ -648,7 +657,7 @@
           for (k = 0, len = ref.length; k < len; k++) {
             layer = ref[k];
             layer.move(scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, scene.on, scene.agentOffset, inputFocus);
-            if (layer.fade && !isMobile) {
+            if (layer.fade && !isMobile && !isIE) {
               results.push(layer.fuse(sceneOffset, sceneHeight));
             } else {
               results.push(void 0);
