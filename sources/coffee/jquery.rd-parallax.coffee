@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.0
+ * @version      3.6.1
 ###
 (($, document, window) ->
   ###*
@@ -13,7 +13,8 @@
   isWebkit = (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) || (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor))
   isChromeIOS = isMobile and /crios/i.test(navigator.userAgent)
   isSafariIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
-  isIE = navigator.appVersion.indexOf("MSIE") isnt -1 || navigator.appVersion.indexOf('Trident/') > 0
+  isIE = navigator.appVersion.indexOf("MSIE") isnt -1 || navigator.appVersion.indexOf('Trident/') > -1
+  isWin8 = /windows nt 6.2/.test(navigator.userAgent.toLowerCase()) || /windows nt 6.3/.test(navigator.userAgent.toLowerCase())
   hasClassList = document.body.classList?
 
   ###*
@@ -79,7 +80,7 @@
         @.responsive = @.getResponsiveOptions()
 
         # Use CSS Absolute for layer position if not IE
-        if (!isIE and !isMobile) or (isChrome and isMobile)
+        if (!isIE and !isMobile) or (isChrome and isMobile) or (isWin8 and isIE)
           @.element.style["position"] = "absolute"
           # Use CSS Fixed && CSS Clip hack if IE
         else
@@ -107,7 +108,7 @@
         layer.speed = layer.getOption("speed", windowWidth) || 0
         layer.offset = layer.getOption("offset", windowWidth) || 0
 
-        if isMobile and !(isChrome and isMobile)
+        if isMobile and !(isChrome and isMobile) and !(isWin8 and isIE)
           if sceneOn
             layer.element.style["position"] = "fixed"
           else
@@ -127,7 +128,7 @@
             layer.holder.style["height"] = "#{layer.offsetHeight}px"
 
             # Bound layer to holder by css absolute if not IE
-            if (!isIE and !isMobile) or (isChrome and isMobile)
+            if (!isIE and !isMobile) or (isChrome and isMobile) or (isWin8 and isIE)
             else
               if isIE
                 layer.element.style["position"] = "static"
@@ -248,7 +249,7 @@
         # Disable moving in IE for media layers
         return if isIE and layer.type is "media"
         # Disable moving in Chrome on Mobile Devices
-        return if isChrome and isMobile
+        return if (isChrome and isMobile) or (isWin8 and isIE)
 
         if !sceneOn
           if isWebkit
@@ -433,7 +434,8 @@
         # Use CSS Clip hack for ie and mobile
         else
           canvas.style["position"] = "absolute"
-          canvas.style["clip"] = "rect(0, auto, auto, 0)"
+          if not (isWin8 and isIE)
+            canvas.style["clip"] = "rect(0, auto, auto, 0)"
 
           # Fix IE input pointer issue inside CSS Clip
           if isIE

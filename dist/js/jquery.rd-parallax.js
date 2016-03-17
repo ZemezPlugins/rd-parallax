@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.0
+ * @version      3.6.1
  */
 
 (function() {
@@ -11,13 +11,14 @@
     /**
      * Compatibility flags
      */
-    var RDParallax, hasClassList, isChrome, isChromeIOS, isIE, isMobile, isSafariIOS, isWebkit;
+    var RDParallax, hasClassList, isChrome, isChromeIOS, isIE, isMobile, isSafariIOS, isWebkit, isWin8;
     isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     isChrome = /Chrome/.test(navigator.userAgent);
     isWebkit = (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) || (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor));
     isChromeIOS = isMobile && /crios/i.test(navigator.userAgent);
     isSafariIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) && !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
-    isIE = navigator.appVersion.indexOf("MSIE") !== -1 || navigator.appVersion.indexOf('Trident/') > 0;
+    isIE = navigator.appVersion.indexOf("MSIE") !== -1 || navigator.appVersion.indexOf('Trident/') > -1;
+    isWin8 = /windows nt 6.2/.test(navigator.userAgent.toLowerCase()) || /windows nt 6.3/.test(navigator.userAgent.toLowerCase());
     hasClassList = document.body.classList != null;
 
     /**
@@ -88,7 +89,7 @@
             this.url = element.getAttribute("data-url");
           }
           this.responsive = this.getResponsiveOptions();
-          if ((!isIE && !isMobile) || (isChrome && isMobile)) {
+          if ((!isIE && !isMobile) || (isChrome && isMobile) || (isWin8 && isIE)) {
             this.element.style["position"] = "absolute";
           } else {
             this.element.style["position"] = "fixed";
@@ -120,7 +121,7 @@
           layer = this;
           layer.speed = layer.getOption("speed", windowWidth) || 0;
           layer.offset = layer.getOption("offset", windowWidth) || 0;
-          if (isMobile && !(isChrome && isMobile)) {
+          if (isMobile && !(isChrome && isMobile) && !(isWin8 && isIE)) {
             if (sceneOn) {
               layer.element.style["position"] = "fixed";
             } else {
@@ -141,7 +142,7 @@
               layer.element.style["width"] = this.holder.offsetWidth + "px";
               layer.offsetHeight = layer.element.offsetHeight;
               layer.holder.style["height"] = layer.offsetHeight + "px";
-              if ((!isIE && !isMobile) || (isChrome && isMobile)) {
+              if ((!isIE && !isMobile) || (isChrome && isMobile) || (isWin8 && isIE)) {
 
               } else {
                 if (isIE) {
@@ -282,7 +283,7 @@
           if (isIE && layer.type === "media") {
             return;
           }
-          if (isChrome && isMobile) {
+          if ((isChrome && isMobile) || (isWin8 && isIE)) {
             return;
           }
           if (!sceneOn) {
@@ -485,7 +486,9 @@
             canvas.style["position"] = "fixed";
           } else {
             canvas.style["position"] = "absolute";
-            canvas.style["clip"] = "rect(0, auto, auto, 0)";
+            if (!(isWin8 && isIE)) {
+              canvas.style["clip"] = "rect(0, auto, auto, 0)";
+            }
             if (isIE) {
               canvas.style["transform"] = "translate3d(0,0,0)";
             } else {
