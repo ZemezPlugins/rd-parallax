@@ -27,6 +27,16 @@
     <li>
         <dl class="inline-term">
             <dt>
+                30.03.2016
+            </dt>
+            <dd>
+                Version 3.6.2. Отключен параллакс на мобильных устройствах.
+            </dd>
+        </dl>
+    </li>
+    <li>
+        <dl class="inline-term">
+            <dt>
                 24.02.2016
             </dt>
             <dd>

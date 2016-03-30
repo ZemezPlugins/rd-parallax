@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.1
+ * @version      3.6.2
  */
 
 (function() {
@@ -89,7 +89,7 @@
             this.url = element.getAttribute("data-url");
           }
           this.responsive = this.getResponsiveOptions();
-          if ((!isIE && !isMobile) || (isChrome && isMobile) || (isWin8 && isIE)) {
+          if ((!isIE && !isMobile) || isMobile || (isWin8 && isIE)) {
             this.element.style["position"] = "absolute";
           } else {
             this.element.style["position"] = "fixed";
@@ -121,7 +121,7 @@
           layer = this;
           layer.speed = layer.getOption("speed", windowWidth) || 0;
           layer.offset = layer.getOption("offset", windowWidth) || 0;
-          if (isMobile && !(isChrome && isMobile) && !(isWin8 && isIE)) {
+          if (!isMobile && !(isWin8 && isIE)) {
             if (sceneOn) {
               layer.element.style["position"] = "fixed";
             } else {
@@ -283,7 +283,7 @@
           if (isIE && layer.type === "media") {
             return;
           }
-          if ((isChrome && isMobile) || (isWin8 && isIE)) {
+          if (isMobile || (isWin8 && isIE)) {
             return;
           }
           if (!sceneOn) {
@@ -327,11 +327,6 @@
           if (isMobile) {
             if (agentOffset != null) {
               layer.element.style["top"] = (sceneOffset - agentOffset) + "px";
-            }
-          }
-          if (isSafariIOS) {
-            if (inputFocus) {
-              pos += sceneOffset;
             }
           }
           if (isWebkit) {
@@ -768,6 +763,7 @@
           ctx.scenes.push(new Scene(element, ctx.options.screenAliases, windowWidth, windowHeight));
         }
         $(window).on("resize", $.proxy(ctx.resize, ctx));
+        $('body').on("resize", $.proxy(ctx.resize, ctx));
         if (isSafariIOS) {
           $('input').on("focusin focus", function(e) {
             e.preventDefault();

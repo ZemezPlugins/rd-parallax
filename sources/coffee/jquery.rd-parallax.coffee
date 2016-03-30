@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.1
+ * @version      3.6.2
 ###
 (($, document, window) ->
   ###*
@@ -80,7 +80,7 @@
         @.responsive = @.getResponsiveOptions()
 
         # Use CSS Absolute for layer position if not IE
-        if (!isIE and !isMobile) or (isChrome and isMobile) or (isWin8 and isIE)
+        if (!isIE and !isMobile) or  isMobile or (isWin8 and isIE)
           @.element.style["position"] = "absolute"
           # Use CSS Fixed && CSS Clip hack if IE
         else
@@ -108,7 +108,7 @@
         layer.speed = layer.getOption("speed", windowWidth) || 0
         layer.offset = layer.getOption("offset", windowWidth) || 0
 
-        if isMobile and !(isChrome and isMobile) and !(isWin8 and isIE)
+        if !isMobile and !(isWin8 and isIE)
           if sceneOn
             layer.element.style["position"] = "fixed"
           else
@@ -249,7 +249,7 @@
         # Disable moving in IE for media layers
         return if isIE and layer.type is "media"
         # Disable moving in Chrome on Mobile Devices
-        return if (isChrome and isMobile) or (isWin8 and isIE)
+        return if isMobile or (isWin8 and isIE)
 
         if !sceneOn
           if isWebkit
@@ -300,9 +300,9 @@
           if agentOffset?
             layer.element.style["top"] = "#{sceneOffset - agentOffset}px"
 
-        if isSafariIOS
-          if inputFocus
-            pos += sceneOffset
+#        if isSafariIOS
+#          if inputFocus
+#            pos += sceneOffset
 
         # Set vendor for old safari and chrome
         if isWebkit
@@ -663,6 +663,7 @@
         ctx.scenes.push(new Scene(element, ctx.options.screenAliases, windowWidth, windowHeight))
 
       $(window).on("resize", $.proxy(ctx.resize, ctx))
+      $('body').on("resize", $.proxy(ctx.resize, ctx))
 
       # Fix default scrolling in iOS Safari on input focus
       if isSafariIOS
