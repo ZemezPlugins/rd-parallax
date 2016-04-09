@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.2
+ * @version      3.6.3
  */
 
 (function() {
@@ -142,7 +142,7 @@
               layer.element.style["width"] = this.holder.offsetWidth + "px";
               layer.offsetHeight = layer.element.offsetHeight;
               layer.holder.style["height"] = layer.offsetHeight + "px";
-              if ((!isIE && !isMobile) || (isChrome && isMobile) || (isWin8 && isIE)) {
+              if ((!isIE && !isMobile) || isMobile || (isWin8 && isIE)) {
 
               } else {
                 if (isIE) {
@@ -230,6 +230,9 @@
               }
               if (!responsive[point]["offset"] && (value = this.element.getAttribute("data" + aliases[j] + "offset"))) {
                 responsive[point]["offset"] = parseInt(value);
+              }
+              if (!responsive[point]["fade"] && (value = this.element.getAttribute("data" + aliases[j] + "fade"))) {
+                responsive[point]["fade"] = value === 'true';
               }
               i--;
             }
@@ -655,6 +658,7 @@
           for (k = 0, len = ref.length; k < len; k++) {
             layer = ref[k];
             layer.move(scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, scene.on, scene.agentOffset, inputFocus);
+            layer.fade = layer.getOption("fade", windowWidth) || false;
             if (layer.fade && !isMobile && !isIE) {
               results.push(layer.fuse(sceneOffset, sceneHeight));
             } else {

@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.2
+ * @version      3.6.3
 ###
 (($, document, window) ->
   ###*
@@ -90,7 +90,7 @@
           when "media"
             @.element.style["background-image"] = "url(#{@.url})" if @.url?
           when "html"
-            # Push HTML layer to front for IE
+          # Push HTML layer to front for IE
             if isIE and isMobile
               @.element.style["z-index"] = 1
 
@@ -128,7 +128,7 @@
             layer.holder.style["height"] = "#{layer.offsetHeight}px"
 
             # Bound layer to holder by css absolute if not IE
-            if (!isIE and !isMobile) or (isChrome and isMobile) or (isWin8 and isIE)
+            if (!isIE and !isMobile) or  isMobile or (isWin8 and isIE)
             else
               if isIE
                 layer.element.style["position"] = "static"
@@ -200,6 +200,9 @@
             if !responsive[point]["offset"] and (value = @.element.getAttribute("data#{aliases[j]}offset"))
               responsive[point]["offset"] = parseInt(value)
 
+            if !responsive[point]["fade"] and (value = @.element.getAttribute("data#{aliases[j]}fade"))
+              responsive[point]["fade"] = value is 'true'
+
             i--
 
         return responsive
@@ -260,7 +263,7 @@
         # Calculate speed by absolute position if not IE
         if (!isMobile) or (layer.type is "html" and inputFocus) or isChromeIOS
           v = layer.speed * layer.direction
-        # Calculate speed by fixed position for IE
+          # Calculate speed by fixed position for IE
         else
           v = layer.speed * layer.direction - 1
 
@@ -269,14 +272,14 @@
         # Agent layer position correction
         if agentOffset?
           dy = (sceneOffset + windowHeight - (agentOffset + windowHeight)) / (windowHeight - sceneHeight)
-        # Else calc with document agent
+          # Else calc with document agent
         else if layer.type isnt "media"
           if sceneOffset < windowHeight or sceneOffset > documentHeight - windowHeight
             # First Screen layer position correction
             if sceneOffset < windowHeight
               dy = sceneOffset / (windowHeight - sceneHeight)
 
-            # Last Screen layer position correction
+              # Last Screen layer position correction
             else
               dy = (sceneOffset + windowHeight - documentHeight ) / (windowHeight - sceneHeight)
 
@@ -300,9 +303,9 @@
           if agentOffset?
             layer.element.style["top"] = "#{sceneOffset - agentOffset}px"
 
-#        if isSafariIOS
-#          if inputFocus
-#            pos += sceneOffset
+        #        if isSafariIOS
+        #          if inputFocus
+        #            pos += sceneOffset
 
         # Set vendor for old safari and chrome
         if isWebkit
@@ -404,7 +407,7 @@
             return parent
           parent = parent.parentNode
 
-        return null  
+        return null
 
       ###*
        * Creates a parallax canvas element
@@ -431,7 +434,7 @@
         # Use CSS Fixed to create canvas if is not IE or not mobile
         if !isIE and !isMobile
           canvas.style["position"] = "fixed"
-        # Use CSS Clip hack for ie and mobile
+          # Use CSS Clip hack for ie and mobile
         else
           canvas.style["position"] = "absolute"
           if not (isWin8 and isIE)
@@ -582,9 +585,10 @@
           scene.move(scrollY)
 
         # Check if layers are in viewport
-#        if (scrollY + windowHeight >= sceneOffset and scrollY <= sceneOffset + sceneHeight)
+        #        if (scrollY + windowHeight >= sceneOffset and scrollY <= sceneOffset + sceneHeight)
         for layer in scene.layers
           layer.move(scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, scene.on, scene.agentOffset, inputFocus)
+          layer.fade = layer.getOption("fade", windowWidth) || false
           layer.fuse(sceneOffset, sceneHeight) if layer.fade and !isMobile and !isIE
 
       ###*

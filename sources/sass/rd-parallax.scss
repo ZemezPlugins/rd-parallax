@@ -5,7 +5,7 @@
 *
 * @author       Evgeniy Gusarov
 * @link         https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
-* @version      3.6.1
+* @version      3.6.3
 */
 .rd-parallax{
 
@@ -14,6 +14,7 @@
     overflow: hidden;
     -webkit-transform: translate3d(0px, 0px, 0px);
     transform: translate3d(0px, 0px, 0px);
+    clip: rect(0,auto,auto,0);
   }
 
   &-layer[data-type="media"]{
