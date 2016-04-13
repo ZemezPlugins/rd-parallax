@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.3
+ * @version      3.6.4
 ###
 (($, document, window) ->
   ###*
@@ -161,6 +161,19 @@
           holder.style["position"] = "relative"
 
         return holder
+
+      ###*
+      * Creates a static layer holder element
+      * @public
+      * @returns {element} holder
+      ###
+      isHolderWrong: ()->
+        layer = @
+
+        if layer.type is "html"
+          if layer.holder.offsetHeight != layer.element.offsetHeight
+            return true
+        return false
 
 
       ###*
@@ -567,6 +580,7 @@
 
         # Update media layers when scene height was recalcucated
         for layer in mediaLayers
+
           layer.refresh(windowWidth, windowHeight, scene.offsetTop, scene.offsetHeight, scene.on)
 
         return
@@ -651,7 +665,9 @@
       @.initialize()
       @.scrollY = window.scrollY || window.pageYOffset
       @.lastScrollY = -1
+      @.lastDocHeight = 0
       @.inputFocus = false
+      @.checkLayerHeight = false
 
     ###*
      * Initializes the Parallax.
@@ -667,7 +683,6 @@
         ctx.scenes.push(new Scene(element, ctx.options.screenAliases, windowWidth, windowHeight))
 
       $(window).on("resize", $.proxy(ctx.resize, ctx))
-      $('body').on("resize", $.proxy(ctx.resize, ctx))
 
       # Fix default scrolling in iOS Safari on input focus
       if isSafariIOS
@@ -677,17 +692,19 @@
           window.scrollTo(window.scrollX || window.pageXOffset, ctx.activeOffset - this.offsetHeight - 100)
         )
 
+
       $(window).trigger("resize")
       ctx.update()
+      ctx.checkResize()
       return
 
     ###*
      * Resize all scenes
      * @public
     ###
-    resize: ()->
+    resize: (forceResize)->
       ctx = @
-      if (currentWindowWidth = window.innerWidth) isnt ctx.windowWidth or !isMobile
+      if ((currentWindowWidth = window.innerWidth) isnt ctx.windowWidth or !isMobile or forceResize)
         ctx.windowWidth = currentWindowWidth
         ctx.windowHeight = window.innerHeight
         ctx.documentHeight = document.body.offsetHeight
@@ -731,8 +748,9 @@
         scrollY -= ctx.deltaHeight
 
       # Update All Parallax scenes
-      if (scrollY isnt ctx.lastScrollY or forceUpdate) and !ctx.isActing
+      if ((scrollY isnt ctx.lastScrollY) or forceUpdate) and !ctx.isActing
         ctx.isActing = true
+
 
         windowWidth = ctx.windowWidth
         windowHeight = ctx.windowHeight
@@ -748,11 +766,32 @@
 
 
         for scene in ctx.scenes
-          if ctx.inputFocus || forceUpdate || (scrollY + windowHeight >= (scene.agentOffset || scene.offsetTop) + deltaScroll  and scrollY <= (scene.agentOffset || scene.offsetTop) + (scene.agentHeight || scene.offsetHeight) + deltaScroll)
+          if ctx.inputFocus || forceUpdate ||  (scrollY + windowHeight >= (scene.agentOffset || scene.offsetTop) + deltaScroll  and scrollY <= (scene.agentOffset || scene.offsetTop) + (scene.agentHeight || scene.offsetHeight) + deltaScroll)
             scene.update(scrollY, windowWidth, windowHeight, documentHeight, ctx.inputFocus)
 
         ctx.lastScrollY = scrollY
         ctx.isActing = false
+
+    checkResize:() ->
+      ctx = @
+
+      setInterval(->
+        docHeight = document.body.offsetHeight
+        for scene in ctx.scenes
+          for layer in scene.layers
+            if layer.isHolderWrong()
+              ctx.checkLayerHeight = true
+              break
+          if ctx.checkLayerHeight then break
+
+        if ctx.checkLayerHeight or docHeight isnt ctx.lastDocHeight
+          ctx.resize(true)
+          ctx.lastDocHeight = docHeight
+          ctx.checkLayerHeight = false
+      , 500)
+      return
+
+
 
   ###*
    * The jQuery Plugin for the RD Parallax

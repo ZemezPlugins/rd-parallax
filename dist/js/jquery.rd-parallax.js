@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.3
+ * @version      3.6.4
  */
 
 (function() {
@@ -181,6 +181,24 @@
             holder.style["position"] = "relative";
           }
           return holder;
+        };
+
+
+        /**
+        * Creates a static layer holder element
+        * @public
+        * @returns {element} holder
+         */
+
+        Layer.prototype.isHolderWrong = function() {
+          var layer;
+          layer = this;
+          if (layer.type === "html") {
+            if (layer.holder.offsetHeight !== layer.element.offsetHeight) {
+              return true;
+            }
+          }
+          return false;
         };
 
 
@@ -747,7 +765,9 @@
         this.initialize();
         this.scrollY = window.scrollY || window.pageYOffset;
         this.lastScrollY = -1;
+        this.lastDocHeight = 0;
         this.inputFocus = false;
+        this.checkLayerHeight = false;
       }
 
 
@@ -767,7 +787,6 @@
           ctx.scenes.push(new Scene(element, ctx.options.screenAliases, windowWidth, windowHeight));
         }
         $(window).on("resize", $.proxy(ctx.resize, ctx));
-        $('body').on("resize", $.proxy(ctx.resize, ctx));
         if (isSafariIOS) {
           $('input').on("focusin focus", function(e) {
             e.preventDefault();
@@ -777,6 +796,7 @@
         }
         $(window).trigger("resize");
         ctx.update();
+        ctx.checkResize();
       };
 
 
@@ -785,10 +805,10 @@
        * @public
        */
 
-      RDParallax.prototype.resize = function() {
+      RDParallax.prototype.resize = function(forceResize) {
         var ctx, currentWindowWidth, k, len, ref, scene;
         ctx = this;
-        if ((currentWindowWidth = window.innerWidth) !== ctx.windowWidth || !isMobile) {
+        if ((currentWindowWidth = window.innerWidth) !== ctx.windowWidth || !isMobile || forceResize) {
           ctx.windowWidth = currentWindowWidth;
           ctx.windowHeight = window.innerHeight;
           ctx.documentHeight = document.body.offsetHeight;
@@ -834,7 +854,7 @@
           ctx.deltaHeight = deltaHeight;
           scrollY -= ctx.deltaHeight;
         }
-        if ((scrollY !== ctx.lastScrollY || forceUpdate) && !ctx.isActing) {
+        if (((scrollY !== ctx.lastScrollY) || forceUpdate) && !ctx.isActing) {
           ctx.isActing = true;
           windowWidth = ctx.windowWidth;
           windowHeight = ctx.windowHeight;
@@ -856,6 +876,35 @@
           ctx.lastScrollY = scrollY;
           return ctx.isActing = false;
         }
+      };
+
+      RDParallax.prototype.checkResize = function() {
+        var ctx;
+        ctx = this;
+        setInterval(function() {
+          var docHeight, k, l, layer, len, len1, ref, ref1, scene;
+          docHeight = document.body.offsetHeight;
+          ref = ctx.scenes;
+          for (k = 0, len = ref.length; k < len; k++) {
+            scene = ref[k];
+            ref1 = scene.layers;
+            for (l = 0, len1 = ref1.length; l < len1; l++) {
+              layer = ref1[l];
+              if (layer.isHolderWrong()) {
+                ctx.checkLayerHeight = true;
+                break;
+              }
+            }
+            if (ctx.checkLayerHeight) {
+              break;
+            }
+          }
+          if (ctx.checkLayerHeight || docHeight !== ctx.lastDocHeight) {
+            ctx.resize(true);
+            ctx.lastDocHeight = docHeight;
+            return ctx.checkLayerHeight = false;
+          }
+        }, 500);
       };
 
       return RDParallax;
