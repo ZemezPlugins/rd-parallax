@@ -1,8 +1,9 @@
+
 /**
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.4
+ * @version      3.6.5
  */
 
 (function() {
@@ -11,7 +12,7 @@
     /**
      * Compatibility flags
      */
-    var RDParallax, hasClassList, isChrome, isChromeIOS, isIE, isMobile, isSafariIOS, isWebkit, isWin8;
+    var RDParallax, chromeVersion, hasClassList, isChrome, isChromeIOS, isChromeNew, isIE, isMobile, isSafariIOS, isWebkit, isWin8;
     isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     isChrome = /Chrome/.test(navigator.userAgent);
     isWebkit = (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) || (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor));
@@ -20,6 +21,8 @@
     isIE = navigator.appVersion.indexOf("MSIE") !== -1 || navigator.appVersion.indexOf('Trident/') > -1;
     isWin8 = /windows nt 6.2/.test(navigator.userAgent.toLowerCase()) || /windows nt 6.3/.test(navigator.userAgent.toLowerCase());
     hasClassList = document.body.classList != null;
+    chromeVersion = isChrome ? navigator.userAgent.replace(/^.*Chrome\/([\d\.]+).*$/i, '$1') : false;
+    isChromeNew = chromeVersion >= '55.0.2883.75';
 
     /**
      * The requestAnimationFrame polyfill
@@ -74,7 +77,12 @@
 
       Layer = (function() {
         function Layer(element, aliases, windowWidth, windowHeight, sceneOffset, sceneHeight, sceneOn) {
-          this.amend = isWebkit || isIE || isMobile ? 60 : 0;
+          var ref, ref1;
+          this.amend = (ref = (ref1 = isWebkit || isIE || isMobile) != null ? ref1 : isChromeNew) != null ? ref : {
+            0: {
+              60: 0
+            }
+          };
           this.element = element;
           this.aliases = aliases;
           this.type = element.getAttribute("data-type") || "html";
@@ -420,9 +428,13 @@
 
       Scene = (function() {
         function Scene(element, aliases, windowWidth, windowHeight) {
-          var scene;
+          var ref, scene;
           scene = this;
-          scene.amend = isWebkit ? 60 : 0;
+          scene.amend = (ref = isWebkit != null ? isWebkit : isChromeNew) != null ? ref : {
+            0: {
+              60: 0
+            }
+          };
           scene.element = element;
           scene.aliases = aliases;
           scene.on = true;

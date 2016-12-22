@@ -2,7 +2,7 @@
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
  * @see          https://ua.linkedin.com/pub/evgeniy-gusarov/8a/a40/54a
- * @version      3.6.4
+ * @version      3.6.5
 ###
 (($, document, window) ->
   ###*
@@ -16,6 +16,8 @@
   isIE = navigator.appVersion.indexOf("MSIE") isnt -1 || navigator.appVersion.indexOf('Trident/') > -1
   isWin8 = /windows nt 6.2/.test(navigator.userAgent.toLowerCase()) || /windows nt 6.3/.test(navigator.userAgent.toLowerCase())
   hasClassList = document.body.classList?
+  chromeVersion = if isChrome then navigator.userAgent.replace(/^.*Chrome\/([\d\.]+).*$/i, '$1') else false
+  isChromeNew = chromeVersion >= '55.0.2883.75'
 
   ###*
    * The requestAnimationFrame polyfill
@@ -66,7 +68,7 @@
     class Layer
       constructor: (element, aliases, windowWidth, windowHeight, sceneOffset, sceneHeight, sceneOn) ->
         # Value is using to amend scroll issues with fixed elements in webkit
-        @.amend = if isWebkit || isIE || isMobile then 60 else 0
+        @.amend = isWebkit || isIE || isMobile ? isChromeNew ? 0 : 60 : 0
         @.element = element
         @.aliases = aliases
 
@@ -376,7 +378,7 @@
         scene = @
 
         # Value is using to amend scroll issues with fixed elements in webkit
-        scene.amend = if isWebkit then 60 else 0
+        scene.amend = isWebkit ? isChromeNew ? 0 : 60 : 0
         scene.element = element
         scene.aliases = aliases
 
