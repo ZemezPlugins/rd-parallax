@@ -68,7 +68,7 @@
     class Layer
       constructor: (element, aliases, windowWidth, windowHeight, sceneOffset, sceneHeight, sceneOn) ->
         # Value is using to amend scroll issues with fixed elements in webkit
-        @.amend = isWebkit || isIE || isMobile ? isChromeNew ? 0 : 60 : 0
+        @.amend = if (isWebkit or isIE or isMobile) then (if isChromeNew then 0 else 60) else 0
         @.element = element
         @.aliases = aliases
 
@@ -378,7 +378,7 @@
         scene = @
 
         # Value is using to amend scroll issues with fixed elements in webkit
-        scene.amend = isWebkit ? isChromeNew ? 0 : 60 : 0
+        scene.amend = if isWebkit and !isChromeNew then 60 else 0
         scene.element = element
         scene.aliases = aliases
 
@@ -693,7 +693,6 @@
           ctx.activeOffset = $(@).offset().top
           window.scrollTo(window.scrollX || window.pageXOffset, ctx.activeOffset - this.offsetHeight - 100)
         )
-
 
       $(window).trigger("resize")
       ctx.update()

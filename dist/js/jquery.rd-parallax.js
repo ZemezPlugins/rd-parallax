@@ -1,4 +1,3 @@
-
 /**
  * @module       RD Parallax
  * @author       Evgeniy Gusarov
@@ -77,12 +76,7 @@
 
       Layer = (function() {
         function Layer(element, aliases, windowWidth, windowHeight, sceneOffset, sceneHeight, sceneOn) {
-          var ref, ref1;
-          this.amend = (ref = (ref1 = isWebkit || isIE || isMobile) != null ? ref1 : isChromeNew) != null ? ref : {
-            0: {
-              60: 0
-            }
-          };
+          this.amend = isWebkit || isIE || isMobile ? (isChromeNew ? 0 : 60) : 0;
           this.element = element;
           this.aliases = aliases;
           this.type = element.getAttribute("data-type") || "html";
@@ -119,9 +113,9 @@
 
 
         /**
-        * Refresh layer size statements
-        * @param {number} window width
-        * @public
+         * Refresh layer size statements
+         * @param {number} window width
+         * @public
          */
 
         Layer.prototype.refresh = function(windowWidth, windowHeight, sceneOffset, sceneHeight, sceneOn) {
@@ -169,9 +163,9 @@
 
 
         /**
-        * Creates a static layer holder element
-        * @public
-        * @returns {element} holder
+         * Creates a static layer holder element
+         * @public
+         * @returns {element} holder
          */
 
         Layer.prototype.createHolder = function() {
@@ -193,9 +187,9 @@
 
 
         /**
-        * Creates a static layer holder element
-        * @public
-        * @returns {element} holder
+         * Creates a static layer holder element
+         * @public
+         * @returns {element} holder
          */
 
         Layer.prototype.isHolderWrong = function() {
@@ -211,11 +205,11 @@
 
 
         /**
-        * Gets specific option of layer
-        * @public
-        * @param {string} key
-        * @param {number} window width
-        * @returns {object} value
+         * Gets specific option of layer
+         * @public
+         * @param {string} key
+         * @param {number} window width
+         * @returns {object} value
          */
 
         Layer.prototype.getOption = function(key, windowWidth) {
@@ -231,9 +225,9 @@
 
 
         /**
-        * Creates a set of responsive options of the layer
-        * @public
-        * @returns {object} options
+         * Creates a set of responsive options of the layer
+         * @public
+         * @returns {object} options
          */
 
         Layer.prototype.getResponsiveOptions = function() {
@@ -268,10 +262,10 @@
 
 
         /**
-        * Fade layer according to its position in scene
-        * @public
-        * @param {number} sceneOffset - current scene offset
-        * @param {number} sceneHeight - current scene height
+         * Fade layer according to its position in scene
+         * @public
+         * @param {number} sceneOffset - current scene offset
+         * @param {number} sceneHeight - current scene height
          */
 
         Layer.prototype.fuse = function(sceneOffset, sceneHeight) {
@@ -295,15 +289,15 @@
 
 
         /**
-        * Move layer in scene
-        * @public
-        * @param {number} scrollY - current scroll top
-        * @param {number} windowWidth - current window width
-        * @param {number} windowHeight - current window height
-        * @param {number} sceneOffset - current scene offset top
-        * @param {number} sceneHeight - current scene height
-        * @param {number} documentHeight - current scene height
-        * @param {number} agentOffset - current agent offset
+         * Move layer in scene
+         * @public
+         * @param {number} scrollY - current scroll top
+         * @param {number} windowWidth - current window width
+         * @param {number} windowHeight - current window height
+         * @param {number} sceneOffset - current scene offset top
+         * @param {number} sceneHeight - current scene height
+         * @param {number} documentHeight - current scene height
+         * @param {number} agentOffset - current agent offset
          */
 
         Layer.prototype.move = function(scrollY, windowWidth, windowHeight, sceneOffset, sceneHeight, documentHeight, sceneOn, agentOffset, inputFocus) {
@@ -366,10 +360,10 @@
 
 
         /**
-        * Normalize layer speed
-        * @public
-        * @param {number} value - speed
-        * @returns {number} normalized speed
+         * Normalize layer speed
+         * @public
+         * @param {number} value - speed
+         * @returns {number} normalized speed
          */
 
         Layer.prototype.getSpeed = function(value) {
@@ -378,13 +372,13 @@
 
 
         /**
-        * Calculate media layer height
-        * @public
-        * @param {number} windowHeight - current window height
-        * @param {number} sceneHeight - current scene height
-        * @param {number} speed - current speed
-        * @param {number} direction - movement direction
-        * @returns {number} media layer height
+         * Calculate media layer height
+         * @public
+         * @param {number} windowHeight - current window height
+         * @param {number} sceneHeight - current scene height
+         * @param {number} speed - current speed
+         * @param {number} direction - movement direction
+         * @returns {number} media layer height
          */
 
         Layer.prototype.getMediaHeight = function(windowHeight, sceneHeight, speed, direction) {
@@ -428,13 +422,9 @@
 
       Scene = (function() {
         function Scene(element, aliases, windowWidth, windowHeight) {
-          var ref, scene;
+          var scene;
           scene = this;
-          scene.amend = (ref = isWebkit != null ? isWebkit : isChromeNew) != null ? ref : {
-            0: {
-              60: 0
-            }
-          };
+          scene.amend = isWebkit && !isChromeNew ? 60 : 0;
           scene.element = element;
           scene.aliases = aliases;
           scene.on = true;
@@ -535,11 +525,11 @@
 
 
         /**
-        * Gets specific option of layer
-        * @public
-        * @param {string} key
-        * @param {number} window width
-        * @returns {object} value
+         * Gets specific option of layer
+         * @public
+         * @param {string} key
+         * @param {number} window width
+         * @returns {object} value
          */
 
         Scene.prototype.getOption = function(key, windowWidth) {
